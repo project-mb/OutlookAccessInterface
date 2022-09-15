@@ -8,7 +8,9 @@
 	mc:Ignorable="d"
 	
 	Title="OAInterface"
-	Height="261" Width="512"
+	Width="512"
+	Height="261"
+	WindowStartupLocation="CenterOwner"
 	ResizeMode="NoResize">
 
 	<Grid>
@@ -19,7 +21,7 @@
 			<ColumnDefinition Width="10"/>
 			<ColumnDefinition Width="128"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
-		
+
 		<Grid.RowDefinitions>
 			<RowDefinition Height="32"></RowDefinition>
 			<RowDefinition Height="38"></RowDefinition>
