@@ -57,7 +57,7 @@
 		<DatePicker	Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top"
 							Name="dp_selBotDate"/>
 
-		<Label Content="Label" Width="128" Height="28"
+		<Label Content="TopDate" Width="128" Height="28"
 							Grid.Column="0" Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
 							Name="lb_selTopDate"/>
 		<DatePicker	Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top"

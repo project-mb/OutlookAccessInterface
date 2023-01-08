@@ -51,28 +51,37 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Windows\DatabaseWindow.xaml.cs">
-      <DependentUpon>DatabaseWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Model\Calendar.cs" />
+    <Compile Include="Model\CalendarProperties\CalendarEvent.cs" />
+    <Compile Include="Model\CalendarProperties\Day.cs" />
+    <Compile Include="Model\CalendarProperties\DayType.cs" />
+    <Compile Include="Model\CalendarProperties\OtherEvent.cs" />
+    <Compile Include="Model\CalendarProperties\RecordEvent.cs" />
+    <Compile Include="Model\Database.cs" />
+    <Compile Include="Model\ModelProperties\Client.cs" />
+    <Compile Include="Model\ModelProperties\CostCentreClient.cs" />
+    <Compile Include="Model\ModelProperties\Project.cs" />
+    <Compile Include="Model\ModelProperties\WorkType.cs" />
+    <Compile Include="Model\RecordEntry.cs" />
+    <Compile Include="View\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\DatabaseWindow.xaml.cs">
+      <DependentUpon>DatabaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\DatabaseWindow.xaml">
+    <Page Include="View\DatabaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +111,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Class\" />
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="View\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
