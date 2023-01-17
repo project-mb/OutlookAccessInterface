@@ -70,7 +70,7 @@
     <Compile Include="Model\CalendarProperties\DayType.cs" />
     <Compile Include="Model\CalendarProperties\OtherEvent.cs" />
     <Compile Include="Model\CalendarProperties\RecordEvent.cs" />
-    <Compile Include="Model\Database.cs" />
+    <Compile Include="Model\DatabaseConnection.cs" />
     <Compile Include="Model\ModelProperties\Client.cs" />
     <Compile Include="Model\ModelProperties\CostCentreClient.cs" />
     <Compile Include="Model\ModelProperties\Project.cs" />
