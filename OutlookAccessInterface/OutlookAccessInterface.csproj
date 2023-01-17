@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Controller.cs" />
-    <Compile Include="Model\Calendar.cs" />
+    <Compile Include="Model\CalendarReader.cs" />
     <Compile Include="Model\CalendarProperties\CalendarEvent.cs" />
     <Compile Include="Model\CalendarProperties\Day.cs" />
     <Compile Include="Model\CalendarProperties\DayType.cs" />
