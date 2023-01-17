@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace OutlookAccessInterface.View
+namespace OutlookAccessInterface.View.DatabaseWindow
 {
   /// <summary>
   /// Interaction logic for DatabaseWindow.xaml

@@ -1,0 +1,30 @@
+﻿<Window
+    x:Class="OutlookAccessInterface.View.DatabaseWindow.DatabaseWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:OutlookAccessInterface.View.DatabaseWindow"
+    mc:Ignorable="d"
+
+    Title="OAInterface"
+    WindowStartupLocation="CenterOwner"
+    WindowState="Maximized"
+    Height="1080"
+    Width="1920">
+    
+    <Grid>
+        <TabControl Grid.ColumnSpan="5" Grid.RowSpan="4">
+            <TabItem Header="NewProjects">
+                <uc:NewProjectTab/>
+            </TabItem>
+
+            <TabItem Header="NewCCCs" IsEnabled="True"></TabItem>
+
+            <TabItem Header="EditData" IsEnabled="True"></TabItem>
+
+            <TabItem Header="Settings"></TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>

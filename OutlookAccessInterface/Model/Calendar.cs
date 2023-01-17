@@ -1,4 +1,6 @@
-﻿namespace OutlookAccessInterface.Model
+﻿
+
+namespace OutlookAccessInterface.Model
 {
     public class Calendar
     {
