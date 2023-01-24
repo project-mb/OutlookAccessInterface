@@ -5,6 +5,7 @@
     xmlns:local="clr-namespace:OutlookAccessInterface"
     StartupUri="/View/MainWindow/MainWindow.xaml">
     <Application.Resources>
-
+        <!-- /View/MainWindow/MainWindow.xaml -->
+        <!-- /View/DatabaseWindow/DatabaseWindow.xaml -->
     </Application.Resources>
 </Application>

@@ -49,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms"/>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,18 +63,20 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Controller\Controller.cs" />
-    <Compile Include="Model\CalendarReader.cs" />
-    <Compile Include="Model\CalendarProperties\CalendarEvent.cs" />
-    <Compile Include="Model\CalendarProperties\Day.cs" />
-    <Compile Include="Model\CalendarProperties\DayType.cs" />
-    <Compile Include="Model\CalendarProperties\OtherEvent.cs" />
-    <Compile Include="Model\CalendarProperties\RecordEvent.cs" />
-    <Compile Include="Model\DatabaseConnection.cs" />
-    <Compile Include="Model\ModelProperties\Client.cs" />
-    <Compile Include="Model\ModelProperties\CostCentreClient.cs" />
-    <Compile Include="Model\ModelProperties\Project.cs" />
+    <ItemGroup>
+        <Compile Include="Controller\Controller.cs"/>
+        <Compile Include="Controller\MainWindow\SelectionViewController.cs"/>
+        <Compile Include="Controller\Util.cs"/>
+        <Compile Include="Model\CalendarReader.cs"/>
+        <Compile Include="Model\CalendarProperties\CalendarEvent.cs"/>
+        <Compile Include="Model\CalendarProperties\Day.cs"/>
+        <Compile Include="Model\CalendarProperties\DayType.cs"/>
+        <Compile Include="Model\CalendarProperties\OtherEvent.cs"/>
+        <Compile Include="Model\CalendarProperties\RecordEvent.cs"/>
+        <Compile Include="Model\DatabaseConnection.cs"/>
+        <Compile Include="Model\ModelProperties\Client.cs"/>
+        <Compile Include="Model\ModelProperties\CostCentreClient.cs"/>
+        <Compile Include="Model\ModelProperties\Project.cs"/>
     <Compile Include="Model\ModelProperties\WorkType.cs" />
     <Compile Include="Model\RecordEntry.cs" />
     <Compile Include="View\App.xaml.cs">
@@ -147,14 +150,18 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="View\App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <ItemGroup>
+        <Folder Include="Controller\DatabaseWindow"/>
+        <Folder Include="Model\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ApplicationDefinition Include="View\App.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </ApplicationDefinition>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="README.md"/>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
