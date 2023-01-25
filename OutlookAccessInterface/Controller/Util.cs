@@ -9,19 +9,25 @@ namespace OutlookAccessInterface.Controller
 		//N: 
 		public const string ROOTDIR = "D:\\Privat\\DevPoint\\VSProjects\\AccessImporter_OutlookCalendar\\_Files";
 
-		//N: Contains the 'absolute' path where .ics/.pst Calendar-Files are stored
+		//N: contains the 'absolute' path where .ics/.pst Calendar-Files are stored
 		public const string CALENDARFILEPATH = ROOTDIR;
 
-		//N: Contains the current .ics/.pst Calendar-File
+		//N: de
+		public const string CALENDARDEFFILTER = "ics files (*.ics)|*.ics";
+
+		//N: contains the current .ics/.pst Calendar-File
 		public static string calendarFile;
 
-		//N: Contains the 'absolute' path where .accdb AccessDatabase-Files are stored
+		//N: contains the 'absolute' path where .accdb AccessDatabase-Files are stored
 		public const string DATABASEFILEPATH = ROOTDIR;
 
-		//N: Contains the current .accdb AccessDatabase-File
+		//N: contains the current .accdb AccessDatabase-File
 		public static string databaseFile;
 
-		//NSEC: 
+		//N: default database filter for file selection
+		public const string DATABASEDEFFILTER = "accdb files (*.accdb)|*.accdb";
+
+		//NSEC: sets properties for file-dialog and returns selected file path if valid
 		public static string getSelectedFile(string initialDirectory = ROOTDIR, string title = "Select File", string[] filter = null, string defaultExt = "", bool addExt = true)
 		{
 			string selectedFilePath = "";
