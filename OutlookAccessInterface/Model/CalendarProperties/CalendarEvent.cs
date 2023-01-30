@@ -4,20 +4,18 @@ namespace OutlookAccessInterface.Model.CalendarProperties
 {
 	public class CalendarEvent
 	{
-		//N: index for unique identifier
-		public static int Index { get; private set; }
+		public static int ID { get; private set; } //	=> an unique identifier
 
-
-		public string Date { get; }
-		public double StartTime { get; }
-		public double EndTime { get; }
-		public double DurationTime { get; }
-		public string _Class { get; }
-		public string Summary { get; }
+		public string Date { get; } //					=> date on which the event occured
+		public double StartTime { get; } //				=> time the event has started
+		public double EndTime { get; } //				=> time the event ended (can be on the following day)
+		public double DurationTime { get; } //			=> duration of event
+		public string _Class { get; } //				=> class of event (eg. private/public/...)
+		public string Summary { get; } //				=> content of event
 
 		public CalendarEvent(string date, double startTime, double endTime, double durationTime, string _class, string summary)
 		{
-			Index++;
+			ID++;
 			Date = date;
 			StartTime = startTime;
 			EndTime = endTime;
