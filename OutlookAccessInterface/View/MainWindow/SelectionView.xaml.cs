@@ -16,23 +16,34 @@ namespace OutlookAccessInterface.View.MainWindow
 			this.viewController = new SelectionViewController();
 		}
 
+		#region uiEvents
+
+		#region clickEvents
+
 		//NSEC: handles click event of calendar file selection and updates ui
-		private void Bt_selCalendarFile_OnClick(object sender, RoutedEventArgs e)
+		private void bt_selCalendarFile_OnClick(object sender, RoutedEventArgs e)
 		{
-			string fileName = this.viewController.Bt_selCalendarFile_clickhandler();
+			string fileName = this.viewController.bt_selCalendarFile_clickhandler();
 
 			updateOnFileSelection(this.tb_selCalendarFile, fileName);
 		}
 
 		//NSEC: handles click event of database file selection and updates ui
-		private void Bt_selDatabaseFile_OnClick(object sender, RoutedEventArgs e)
+		private void bt_selDatabaseFile_OnClick(object sender, RoutedEventArgs e)
 		{
-			string fileName = this.viewController.Bt_selDatabaseFile_clickhandler();
+			string fileName = this.viewController.bt_selDatabaseFile_clickhandler();
 
 			updateOnFileSelection(this.tb_selDatabaseFile, fileName);
 		}
 
-		private void Bt_importData_OnClick(object sender, RoutedEventArgs e) { this.viewController.Bt_importData_clickHandler(); }
+		private void bt_importData_OnClick(object sender, RoutedEventArgs e) { this.viewController.bt_importData_clickHandler(); }
+
+		#endregion
+
+		#endregion
+
+
+		#region controllerFunctions
 
 		//NSEC: updates ui if a file selection occured
 		private void updateOnFileSelection(TextBox tb, string checkStr)
@@ -45,5 +56,7 @@ namespace OutlookAccessInterface.View.MainWindow
 				tb.BorderBrush = Brushes.Black;
 			}
 		}
+
+		#endregion
 	}
 }

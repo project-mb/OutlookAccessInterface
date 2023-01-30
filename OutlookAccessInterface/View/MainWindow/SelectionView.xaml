@@ -43,7 +43,7 @@
 				Grid.Column="4" Grid.Row="1"
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				Name="bt_selCalendarFile"
-				Click="Bt_selCalendarFile_OnClick" />
+				Click="bt_selCalendarFile_OnClick" />
 
 		<!-- DatabaseFile -->
 		<Label Content="DatabaseFile:"
@@ -64,7 +64,7 @@
 				Grid.Column="4" Grid.Row="2"
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				Name="bt_selDatabaseFile"
-				Click="Bt_selDatabaseFile_OnClick" />
+				Click="bt_selDatabaseFile_OnClick" />
 
 		<!-- BottomDate -->
 		<Label Content="BottomDate"
@@ -99,7 +99,7 @@
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
 				Name="bt_importData"
-				Click="Bt_importData_OnClick" />
+				Click="bt_importData_OnClick" />
 
 	</Grid>
 </UserControl>
