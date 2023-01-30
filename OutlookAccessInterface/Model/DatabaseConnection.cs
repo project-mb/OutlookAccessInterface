@@ -16,12 +16,11 @@ namespace OutlookAccessInterface.Model
 		// getter-setter
 		public bool IsConnected { get; private set; }
 
-		public Dictionary<string, Dictionary<string, List<string>>> Tabels { get; private set; } = new Dictionary<string, Dictionary<string, List<string>>>();
+		public Dictionary<string, Dictionary<string, List<string>>> Tabels { get; } = new Dictionary<string, Dictionary<string, List<string>>>();
 
 		// constructor
 		public DatabaseConnection(string databaseFilePath)
 		{
-			this.IsConnected = false;
 			this.dbConnection = new OleDbConnection();
 			this.dbConnection.ConnectionString = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + databaseFilePath + "; Persist Security Info = False;";
 		}
@@ -46,7 +45,7 @@ namespace OutlookAccessInterface.Model
 		{
 			try {
 				this.dbConnection.Open();
-				this.IsConnected = true;
+				IsConnected = true;
 				return 0;
 			}
 			catch { return -1; }
@@ -56,7 +55,7 @@ namespace OutlookAccessInterface.Model
 		{
 			try {
 				this.dbConnection.Close();
-				this.IsConnected = false;
+				IsConnected = false;
 				return 0;
 			}
 			catch { return -1; }
