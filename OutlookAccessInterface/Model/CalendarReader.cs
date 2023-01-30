@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Ical.Net.Interfaces;
@@ -12,7 +13,16 @@ namespace OutlookAccessInterface.Model
 	{
 		private readonly string calendarFile;
 
-		public CalendarReader(string calendarFile) { this.calendarFile = calendarFile; }
+		public List<CalendarEvent> PublicHolidays { get; }
+		public List<CalendarEvent> OtherEvents { get; }
+
+		public CalendarReader(string calendarFile)
+		{
+			this.calendarFile = calendarFile;
+
+			PublicHolidays = new List<CalendarEvent>();
+			OtherEvents = new List<CalendarEvent>();
+		}
 
 		public void ReadICS(string startDate = "01.01.0001", string endDate = "31.12.3000")
 		{
@@ -33,6 +43,33 @@ namespace OutlookAccessInterface.Model
 					//TODO: remove debug message
 					Debug.Print("{0}|{1}:{2}|{3}:{4}|{5}|{6}|{7}", evnt.Start.Date.ToString(CultureInfo.CurrentCulture), evnt.Start.Hour, evnt.Start.Minute, evnt.End.Hour, evnt.End.Minute,
 						evnt.Duration, evnt.Class, evnt.Summary);
+				} else {
+					switch (evnt.Summary.ToLower().Trim()) {
+						case "allerheiligen":
+						case "christihimmelfahrt":
+						case "mariämimmelfahrt":
+						case "fronleichnam":
+						case "ostersonntag":
+						case "ostermontag":
+						case "heiligedreikönige":
+						case "mariäempfängnis":
+						case "nationalfeiertag":
+						case "neujahrstag":
+						case "pfingstmontag":
+						case "pfingstsonntag":
+						case "tagderarbeit":
+						case "weihnachtstag":
+						case "stephanitag":
+						case "gründonnerstag":
+						case "karfreitag":
+						case "sylvester":
+						case "heiligerabend":
+							PublicHolidays.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
+							break;
+						default:
+							OtherEvents.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
+							break;
+					}
 				}
 			}
 		}
