@@ -38,7 +38,23 @@ namespace OutlookAccessInterface.View.MainWindow
 			updateOnFileSelection(this.tb_selDatabaseFile, fileName);
 		}
 
-		private void bt_importData_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show(this.viewController.bt_importData_clickHandler()); }
+		private void bt_importData_OnClick(object sender, RoutedEventArgs e)
+		{
+			string str = this.viewController.bt_importData_clickHandler();
+
+			switch (str) {
+				case "calendar file missing": {
+					updateOnFileSelection(this.tb_selCalendarFile, null);
+					break;
+				}
+				case "database file missing": {
+					updateOnFileSelection(this.tb_selDatabaseFile, null);
+					break;
+				}
+			}
+
+			MessageBox.Show(str);
+		}
 
 		#endregion
 
@@ -50,7 +66,7 @@ namespace OutlookAccessInterface.View.MainWindow
 		//NSEC: updates ui if a file selection occured
 		private void updateOnFileSelection(TextBox tb, string checkStr)
 		{
-			if (checkStr == "") {
+			if (checkStr == null) {
 				tb.Text = "-";
 				tb.BorderBrush = Brushes.Red;
 			} else {

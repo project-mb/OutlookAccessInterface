@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows.Forms;
 
 namespace OutlookAccessInterface.ConfigController.ConfigObjects
 {
@@ -35,6 +36,9 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 					string[] arr = jsonObject.Value.ToString().Split('\n').Skip(1).ToArray();
 					Array.Resize(ref arr, arr.Length - 1);
 
+					string temp = arr.Aggregate("", (current, str) => current + str);
+					MessageBox.Show(temp);
+
 					switch (jsonObject.Key) {
 						case "FileLocations": {
 							errorCode = loadFileLocations(jsonObject.Value.ToString());
@@ -56,6 +60,7 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 				}
 			}
 
+			MessageBox.Show(errorCode.ToString());
 			if (errorCode > 0) return 0;
 
 			//N: configFile at path could be corrupted
@@ -94,20 +99,20 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 		private static int loadCalendarFilter(string[] arr)
 		{
-			Filter.calFilter = arr;
-			return arr.Length;
+			Filter.CalFilter = arr.ToString().Split(',');
+			return Filter.CalFilter.Length;
 		}
 
 		private static int loadDatabaseFilter(string[] arr)
 		{
-			Filter.datFilter = arr;
-			return arr.Length;
+			Filter.DatFilter = arr.ToString().Split(',');
+			return Filter.DatFilter.Length;
 		}
 
 		private static int loadHolidays(string[] arr)
 		{
-			HolidayFilter.holidays = arr;
-			return arr.Length;
+			HolidayFilter.holidays = arr.ToString().Split(',');
+			return HolidayFilter.holidays.Length;
 		}
 	}
 }

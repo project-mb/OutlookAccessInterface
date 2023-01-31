@@ -16,9 +16,9 @@ namespace OutlookAccessInterface.Controller.MainWindow
 			handleLoadConfigFile(loadConfigFile());
 		}
 
-		public string bt_selCalendarFile_clickhandler() { return calendarFile = getSelectedFile(title: "Select Target Calendar", filter: Filter.calFilter); }
+		public string bt_selCalendarFile_clickhandler() { return calendarFile = getSelectedFile(title: "Select Target Calendar", filter: Filter.CalFilter); }
 
-		public string bt_selDatabaseFile_clickhandler() { return databaseFile = getSelectedFile(title: "Select Target Database", filter: Filter.datFilter, defaultExt: ".accdb"); }
+		public string bt_selDatabaseFile_clickhandler() { return databaseFile = getSelectedFile(title: "Select Target Database", filter: Filter.DatFilter, defaultExt: ".accdb"); }
 
 		public string bt_importData_clickHandler()
 		{
