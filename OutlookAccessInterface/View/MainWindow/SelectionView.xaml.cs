@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using OutlookAccessInterface.Controller.MainWindow;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace OutlookAccessInterface.View.MainWindow
 {
@@ -14,6 +15,7 @@ namespace OutlookAccessInterface.View.MainWindow
 			InitializeComponent();
 
 			this.viewController = new SelectionViewController();
+			this.viewController.onWindowOpen();
 		}
 
 		#region uiEvents
@@ -36,7 +38,7 @@ namespace OutlookAccessInterface.View.MainWindow
 			updateOnFileSelection(this.tb_selDatabaseFile, fileName);
 		}
 
-		private void bt_importData_OnClick(object sender, RoutedEventArgs e) { this.viewController.bt_importData_clickHandler(); }
+		private void bt_importData_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show(this.viewController.bt_importData_clickHandler()); }
 
 		#endregion
 

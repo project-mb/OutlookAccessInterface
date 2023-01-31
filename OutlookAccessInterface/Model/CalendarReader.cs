@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using Ical.Net.Interfaces;
 using Ical.Net.Interfaces.Components;
 using OutlookAccessInterface.Model.CalendarProperties;
 using Calendar = Ical.Net.Calendar;
+using OutlookAccessInterface.ConfigController.ConfigObjects;
+using Day = OutlookAccessInterface.Model.CalendarProperties.Day;
 
 namespace OutlookAccessInterface.Model
 {
@@ -13,12 +16,11 @@ namespace OutlookAccessInterface.Model
 	{
 		private readonly string calendarFile;
 
-
-		public List<CalendarEvent> Events { get; }
-		public List<CalendarEvent> PublicHolidays { get; }
-		public List<CalendarEvent> OtherEvents { get; }
-		public List<Day> Days { get; }
-		public List<DayType> LutDayType { get; }
+		private List<CalendarEvent> Events { get; }
+		private List<CalendarEvent> PublicHolidays { get; }
+		private List<CalendarEvent> OtherEvents { get; }
+		private List<Day> Days { get; }
+		private List<DayType> LutDayType { get; }
 
 		public CalendarReader(string calendarFile)
 		{
@@ -31,7 +33,7 @@ namespace OutlookAccessInterface.Model
 			LutDayType = new List<DayType>();
 		}
 
-		public void ReadICS(string startDate = "01.01.0001", string endDate = "31.12.3000")
+		public void GetCalendarEventsFromICSFile(string startDate = "01.01.0001", string endDate = "31.12.3000")
 		{
 			ICalendar calendarCollection = Calendar.LoadFromFile(this.calendarFile)[0];
 
@@ -42,7 +44,6 @@ namespace OutlookAccessInterface.Model
 
 			CalendarEvent calEvnt;
 
-
 			foreach (IEvent evnt in calendarCollection.Events) {
 				if (evnt.Start.Date.CompareTo(calStartDate) < 0 || evnt.Start.Date.CompareTo(calEndDate) > 0) return;
 
@@ -52,32 +53,9 @@ namespace OutlookAccessInterface.Model
 						evnt.Duration, evnt.Class, evnt.Summary);
 				} else {
 					//TODO: make holiday list editable (maybe json)
-					switch (evnt.Summary.ToLower().Trim()) {
-						case "allerheiligen":
-						case "christihimmelfahrt":
-						case "mariämimmelfahrt":
-						case "fronleichnam":
-						case "ostersonntag":
-						case "ostermontag":
-						case "heiligedreikönige":
-						case "mariäempfängnis":
-						case "nationalfeiertag":
-						case "neujahrstag":
-						case "pfingstmontag":
-						case "pfingstsonntag":
-						case "tagderarbeit":
-						case "weihnachtstag":
-						case "stephanitag":
-						case "gründonnerstag":
-						case "karfreitag":
-						case "sylvester":
-						case "heiligerabend":
-							PublicHolidays.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
-							break;
-						default:
-							OtherEvents.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
-							break;
-					}
+
+					if (Config.HolidayFilter.holidays.Contains(evnt.Summary.ToLower().Trim())) PublicHolidays.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
+					else OtherEvents.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
 				}
 			}
 		}

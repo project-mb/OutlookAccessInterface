@@ -1,0 +1,35 @@
+{
+  "FileLocations": {
+    "rootDir": "D:\\Privat\\DevPoint\\VSProjects\\AccessImporter_OutlookCalendar\\_Files",
+    "confDir": "D:\\Privat\\DevPoint\\#Projects\\_mbGameStudio\\Other\\OutlookAccessInterface\\OutlookAccessInterface\\Controller\\config.json",
+    "cal_Dir": "D:\\Privat\\DevPoint\\VSProjects\\AccessImporter_OutlookCalendar\\_Files",
+    "dat_Dir": "D:\\Privat\\DevPoint\\VSProjects\\AccessImporter_OutlookCalendar\\_Files"
+  },
+  "CalendarFilter": [
+    "ics files (*.ics)|*.ics"
+  ],
+  "DatabaseFilter": [
+    "accdb files (*.accdb)|*.accdb"
+  ],
+  "Holydays": [
+    "allerheiligen",
+    "christihimmelfahrt",
+    "mariämimmelfahrt",
+    "fronleichnam",
+    "ostersonntag",
+    "ostermontag",
+    "heiligedreikönige",
+    "mariäempfängnis",
+    "nationalfeiertag",
+    "neujahrstag",
+    "pfingstmontag",
+    "pfingstsonntag",
+    "tagderarbeit",
+    "weihnachtstag",
+    "stephanitag",
+    "gründonnerstag",
+    "karfreitag",
+    "silvester",
+    "heiligerabend"
+  ]
+}
