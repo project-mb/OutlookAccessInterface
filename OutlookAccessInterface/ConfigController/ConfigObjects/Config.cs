@@ -34,10 +34,12 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 				//N: get each object
 				foreach (KeyValuePair<string, object> jsonObject in config) {
 					string[] arr = jsonObject.Value.ToString().Split('\n').Skip(1).ToArray();
+					//.Replace("\r", "")
 					Array.Resize(ref arr, arr.Length - 1);
 
-					string temp = arr.Aggregate("", (current, str) => current + str);
-					MessageBox.Show(temp);
+					//TODO: remove debug output
+					//string temp = arr.Aggregate("", (current, str) => current + str);
+					//MessageBox.Show(temp);
 
 					switch (jsonObject.Key) {
 						case "FileLocations": {
@@ -60,7 +62,6 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 				}
 			}
 
-			MessageBox.Show(errorCode.ToString());
 			if (errorCode > 0) return 0;
 
 			//N: configFile at path could be corrupted
@@ -99,19 +100,19 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 		private static int loadCalendarFilter(string[] arr)
 		{
-			Filter.CalFilter = arr.ToString().Split(',');
+			Filter.CalFilter = arr;
 			return Filter.CalFilter.Length;
 		}
 
 		private static int loadDatabaseFilter(string[] arr)
 		{
-			Filter.DatFilter = arr.ToString().Split(',');
+			Filter.DatFilter = arr;
 			return Filter.DatFilter.Length;
 		}
 
 		private static int loadHolidays(string[] arr)
 		{
-			HolidayFilter.holidays = arr.ToString().Split(',');
+			HolidayFilter.holidays = arr;
 			return HolidayFilter.holidays.Length;
 		}
 	}
