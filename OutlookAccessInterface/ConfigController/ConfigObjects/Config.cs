@@ -31,15 +31,18 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 			int errorCode = -2;
 			if (config != null) {
-				//N: get each object
+				//N: get each json object
 				foreach (KeyValuePair<string, object> jsonObject in config) {
-					string[] arr = jsonObject.Value.ToString().Split('\n').Skip(1).ToArray();
-					//.Replace("\r", "")
+					//NSEC: converts jsonObject into string array without json characters
+					string objectString = jsonObject.Value.ToString().Replace("\r", "").Replace("\"", "").Replace(",", "");
+
+					//N: converts json object into string array and removes json characters at start and end
+					string[] arr = objectString.Split('\n').Skip(1).ToArray();
 					Array.Resize(ref arr, arr.Length - 1);
 
-					//TODO: remove debug output
-					//string temp = arr.Aggregate("", (current, str) => current + str);
-					//MessageBox.Show(temp);
+					//N: removes leading and trailing whitespaces for every string in array
+					for (int i = 0; i < arr.Length; i++) { arr[i] = arr[i].Trim(); }
+					//NSEC:END
 
 					switch (jsonObject.Key) {
 						case "FileLocations": {

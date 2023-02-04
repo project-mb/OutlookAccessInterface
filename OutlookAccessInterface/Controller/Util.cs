@@ -25,14 +25,11 @@ namespace OutlookAccessInterface.Controller
 			string filterStr = "";
 			if (filter == null) filterStr = "";
 			else {
-				MessageBox.Show(filter[0]);
 				for (int i = 0; i < filter.Length; i++) {
 					filterStr += filter[i];
 					if (i < filter.Length - 1) filterStr += "|";
 				}
 			}
-
-			MessageBox.Show(filterStr);
 
 			OpenFileDialog ofd = new OpenFileDialog {
 				Title = title,
