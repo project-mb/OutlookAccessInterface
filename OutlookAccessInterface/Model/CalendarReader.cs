@@ -54,7 +54,7 @@ namespace OutlookAccessInterface.Model
 				} else {
 					//TODO: make holiday list editable (maybe json)
 
-					if (Config.HolidayFilter.holidays.Contains(evnt.Summary.ToLower().Trim())) PublicHolidays.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
+					if (HolidayFilters.holidays.Contains(evnt.Summary.ToLower().Trim())) PublicHolidays.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
 					else OtherEvents.Add(new CalendarEvent(evnt.Start.ToString(), evnt.Summary));
 				}
 			}

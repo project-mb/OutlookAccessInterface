@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
+using OutlookAccessInterface.ConfigController.ConfigObjects;
 using OutlookAccessInterface.Model;
 using static OutlookAccessInterface.ConfigController.ConfigObjects.Config;
 using static OutlookAccessInterface.Controller.Util;
@@ -10,15 +10,15 @@ namespace OutlookAccessInterface.Controller.MainWindow
 {
 	public class SelectionViewController
 	{
-		public void onWindowOpen()
+		public void onViewOpen()
 		{
 			//N: when application starts load previous config file
 			handleLoadConfigFile(loadConfigFile());
 		}
 
-		public string bt_selCalendarFile_clickhandler() { return calendarFile = getSelectedFile(title: "Select Target Calendar", filter: Filter.CalFilter); }
+		public string bt_selCalendarFile_clickhandler() { return calendarFile = getSelectedFile("CalDir", title: "Select Target Calendar", filter: Filters.CalFilter); }
 
-		public string bt_selDatabaseFile_clickhandler() { return databaseFile = getSelectedFile(title: "Select Target Database", filter: Filter.DatFilter, defaultExt: ".accdb"); }
+		public string bt_selDatabaseFile_clickhandler() { return databaseFile = getSelectedFile("DatDir", title: "Select Target Database", filter: Filters.DatFilter, defaultExt: ".accdb"); }
 
 		public string bt_importData_clickHandler()
 		{

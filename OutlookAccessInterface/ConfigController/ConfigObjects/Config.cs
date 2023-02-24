@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Windows.Forms;
 
@@ -9,12 +10,7 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 {
 	public static class Config
 	{
-		public const string ConfigFile = FileLocations.defaultconfDir;
-
-		private static FileLocations FileLocation { get; } = new FileLocations();
-		public static Filters Filter { get; } = new Filters();
-
-		public static HolidayFilters HolidayFilter { get; } = new HolidayFilters();
+		public static readonly string ConfigFile = FileLocations.defaultconfDir;
 
 		public static int loadConfigFile()
 		{
@@ -80,22 +76,10 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 			foreach (KeyValuePair<string, object> jsonObject in fileLocationConfig) {
 				string value = jsonObject.Value.ToString();
-				switch (jsonObject.Key) {
-					case "rootDir":
-						FileLocation.RootDir = value;
-						break;
-					case "confDir":
-						FileLocation.ConfDir = value;
-						break;
-					case "cal_Dir":
-						FileLocation.CalDir = value;
-						break;
-					case "dat_Dir":
-						FileLocation.DatDir = value;
-						break;
-					default:
-						return -2;
-				}
+
+				PropertyInfo fi = typeof(FileLocations).GetProperty(jsonObject.Key);
+				if (fi != null) fi.SetValue(null, value);
+				else return -2;
 			}
 
 			return 0;
@@ -103,20 +87,20 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 		private static int loadCalendarFilter(string[] arr)
 		{
-			Filter.CalFilter = arr;
-			return Filter.CalFilter.Length;
+			Filters.CalFilter = arr;
+			return Filters.CalFilter.Length;
 		}
 
 		private static int loadDatabaseFilter(string[] arr)
 		{
-			Filter.DatFilter = arr;
-			return Filter.DatFilter.Length;
+			Filters.DatFilter = arr;
+			return Filters.DatFilter.Length;
 		}
 
 		private static int loadHolidays(string[] arr)
 		{
-			HolidayFilter.holidays = arr;
-			return HolidayFilter.holidays.Length;
+			HolidayFilters.holidays = arr;
+			return HolidayFilters.holidays.Length;
 		}
 	}
 }

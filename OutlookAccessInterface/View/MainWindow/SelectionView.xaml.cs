@@ -15,7 +15,7 @@ namespace OutlookAccessInterface.View.MainWindow
 			InitializeComponent();
 
 			this.viewController = new SelectionViewController();
-			this.viewController.onWindowOpen();
+			this.viewController.onViewOpen();
 		}
 
 		#region uiEvents

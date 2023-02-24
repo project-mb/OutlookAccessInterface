@@ -89,14 +89,15 @@
           <RequiredTargetFramework>4.0</RequiredTargetFramework>
       </Reference>
       <Reference Include="WindowsBase"/>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+      <Reference Include="PresentationCore"/>
+      <Reference Include="PresentationFramework"/>
   </ItemGroup>
     <ItemGroup>
         <Compile Include="ConfigController\ConfigObjects\Config.cs"/>
         <Compile Include="ConfigController\ConfigObjects\FileLocations.cs"/>
         <Compile Include="ConfigController\ConfigObjects\Filters.cs"/>
         <Compile Include="ConfigController\ConfigObjects\HolidayFilters.cs"/>
+        <Compile Include="ConfigController\JsonReader.cs"/>
         <Compile Include="Controller\Controller.cs"/>
         <Compile Include="Controller\MainWindow\SelectionViewController.cs"/>
         <Compile Include="Controller\Util.cs"/>

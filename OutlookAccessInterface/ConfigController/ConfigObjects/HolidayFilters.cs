@@ -1,6 +1,6 @@
 ﻿namespace OutlookAccessInterface.ConfigController.ConfigObjects
 {
-	public class HolidayFilters
+	public static class HolidayFilters
 	{
 		//NSEC: default holidays
 		public static readonly string[] defaultHolidays = {
@@ -26,10 +26,6 @@
 		};
 
 		//N: list of holidays
-		public string[] holidays { get; internal set; }
-
-		public HolidayFilters() : this(defaultHolidays) { }
-
-		public HolidayFilters(string[] holidays) { this.holidays = holidays; }
+		public static string[] holidays { get; internal set; }
 	}
 }
