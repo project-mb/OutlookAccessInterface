@@ -6,8 +6,8 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 	public static class FileLocations
 	{
 		//NSEC: default file paths
-		public static readonly string defaultRootDir = Path.Combine(Environment.GetEnvironmentVariable("AppData"), "OutlookAccessInterface");
-		public static readonly string defaultconfDir = Path.Combine(Environment.GetEnvironmentVariable("AppData"), @"OutlookAccessInterface\config.json");
+		public static readonly string DEFAULT_ROOTDIR = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? string.Empty, "OutlookAccessInterface");
+		public static readonly string DEFAULT_CONFDIR = Path.Combine(Environment.GetEnvironmentVariable("AppData") ?? string.Empty, @"OutlookAccessInterface\config.json");
 
 		//N: contains the 'absolute' path of the current root directory (where all files are stored)
 		public static string RootDir { get; set; }

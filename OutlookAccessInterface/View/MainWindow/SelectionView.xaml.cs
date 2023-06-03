@@ -1,8 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using OutlookAccessInterface.Controller.MainWindow;
+using OutlookAccessInterface.Exceptions.OAIException;
 using MessageBox = System.Windows.Forms.MessageBox;
+using static OutlookAccessInterface.Controller.Util;
 
 namespace OutlookAccessInterface.View.MainWindow
 {
@@ -40,20 +43,17 @@ namespace OutlookAccessInterface.View.MainWindow
 
 		private void bt_importData_OnClick(object sender, RoutedEventArgs e)
 		{
-			string str = this.viewController.bt_importData_clickHandler();
+			string message = $@"Import from {CALENDARFILE} {"\n"}to {DATABASEFILE}";
 
-			switch (str) {
-				case "calendar file missing": {
-					updateOnFileSelection(this.tb_selCalendarFile, null);
-					break;
-				}
-				case "database file missing": {
-					updateOnFileSelection(this.tb_selDatabaseFile, null);
-					break;
-				}
+			try { this.viewController.bt_importData_clickHandler(); }
+			catch (CalendarFileMissingException exception) {
+				updateOnFileSelection(this.tb_selCalendarFile, null);
+				message = exception.Message;
 			}
-
-			MessageBox.Show(str);
+			catch (DatabaseFileMissingException exception) {
+				updateOnFileSelection(this.tb_selDatabaseFile, null);
+				message = exception.Message;
+			} finally { MessageBox.Show(message); }
 		}
 
 		#endregion
@@ -66,7 +66,7 @@ namespace OutlookAccessInterface.View.MainWindow
 		//NSEC: updates ui if a file selection occured
 		private void updateOnFileSelection(TextBox tb, string checkStr)
 		{
-			if (checkStr == null) {
+			if(checkStr == null) {
 				tb.Text = "-";
 				tb.BorderBrush = Brushes.Red;
 			} else {

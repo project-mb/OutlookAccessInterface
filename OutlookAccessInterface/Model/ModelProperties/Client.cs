@@ -1,7 +1,6 @@
-﻿namespace OutlookAccessInterface.Model.Properties
+﻿namespace OutlookAccessInterface.Model.ModelProperties
 {
-    public class Client
-    {
-        
-    }
+	public class Client
+	{
+	}
 }

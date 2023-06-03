@@ -1,64 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Windows;
+using OutlookAccessInterface.Exceptions.DatabaseException;
+using OutlookAccessInterface.Model.CalendarProperties;
 
 namespace OutlookAccessInterface.Model
 {
 	public class DatabaseConnection
 	{
+		//Singleton
+		private static DatabaseConnection _connection;
+		public static DatabaseConnection create(string databaseFilePath) { return _connection ?? (_connection = new DatabaseConnection(databaseFilePath)); }
+		public static void release() { _connection = null; }
+
+		private DatabaseConnection(string databaseFilePath)
+		{
+			this.dbConnection = new OleDbConnection();
+			this.dbConnection.ConnectionString = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + databaseFilePath + "; Persist Security Info = False;";
+		}
+
+		~DatabaseConnection()
+		{
+			_connection = null;
+			disconnect();
+		}
+
+
 		// fields
 		private OleDbCommand cmd;
 		private OleDbDataReader reader;
 		private readonly OleDbConnection dbConnection;
 
 		// getter-setter
-		public bool IsConnected { get; private set; }
-
-		public Dictionary<string, Dictionary<string, List<string>>> Tabels { get; } = new Dictionary<string, Dictionary<string, List<string>>>();
-
-		// constructor
-		public DatabaseConnection(string databaseFilePath)
-		{
-			this.dbConnection = new OleDbConnection();
-			this.dbConnection.ConnectionString = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + databaseFilePath + "; Persist Security Info = False;";
-		}
+		private Dictionary<string, Dictionary<string, List<string>>> Tabels { get; } = new Dictionary<string, Dictionary<string, List<string>>>();
 
 		// class methods
-		private int checkCmdForError(OleDbCommand checkCmd, string errorMsg)
+		private int checkCmdForError(IDbCommand checkCmd, string errorMsg)
 		{
 			this.cmd.Connection = this.dbConnection;
 
 			try { return checkCmd.ExecuteNonQuery(); }
-			catch (Exception e) {
-				string exceptionMsg = "\n\n" + e.Message + "\n\nClosing Program";
-
-				MessageBox.Show(errorMsg + exceptionMsg, "Error");
-				Environment.Exit(0);
-				return -1;
+			catch (Exception exception) {
+				string exceptionMsg = $"{errorMsg}\n\n{exception.Message}\n\nClosing Program";
+				throw new NotValidDatabaseCmdException(exceptionMsg, exception);
 			}
 		}
 
 		// methods
-		public int Open()
+		public void connect()
 		{
-			try {
-				this.dbConnection.Open();
-				IsConnected = true;
-				return 0;
-			}
-			catch { return -1; }
+			try { this.dbConnection.Open(); }
+			catch (Exception exception) { throw new CouldNotConnectToDatabaseException(exception.Message, exception); }
 		}
 
-		public int Close()
+		public void disconnect()
 		{
-			try {
-				this.dbConnection.Close();
-				IsConnected = false;
-				return 0;
-			}
-			catch { return -1; }
+			try { this.dbConnection.Close(); }
+			catch (Exception exception) { throw new CouldNotDisconnectFromDatabaseException(exception.Message, exception); }
 		}
 
 		public Dictionary<string, List<string>> Select(string[] select, string from, string orderBy = "", string where = "")
@@ -70,22 +71,25 @@ namespace OutlookAccessInterface.Model
 			string _select = "";
 
 			foreach (string entry in select) {
-				if (_select == "") _select = entry;
+				if(_select == "") _select = entry;
 				else _select += ", " + entry;
 
 				output.Add(entry, new List<string>());
 			}
 
-			if (orderBy != "") orderBy = " ORDER BY " + orderBy;
-			if (where != "") where = " WHERE " + where;
+			if(orderBy != "") orderBy = $" ORDER BY {orderBy}";
+			if(where != "") where = $" WHERE {where}";
 
-			this.cmd.CommandText = "SELECT " + _select + " FROM " + from + orderBy + where;
+			this.cmd.CommandText = $"SELECT {_select} FROM {from}{orderBy}{where}";
 			this.cmd.Connection = this.dbConnection;
 
 			try { this.reader = this.cmd.ExecuteReader(); }
-			catch (Exception e) { MessageBox.Show("[Select]\n" + e.Message + "\n\nClosing Program", "Error"); }
+			catch (Exception exception) {
+				string exceptionMsg = $"[Select]\n{exception.Message}\n\nClosing Program";
+				throw new NotValidDatabaseSelectException(exceptionMsg, exception);
+			}
 
-			if (this.reader == null) return null;
+			if(this.reader == null) return null;
 			while (this.reader.Read()) {
 				foreach (string item in select) { output[item].Add(this.reader[item].ToString()); }
 			}
@@ -104,24 +108,24 @@ namespace OutlookAccessInterface.Model
 			string _values = "";
 
 			foreach (string entry in insertInto) {
-				if (_insertInto == "") _insertInto = entry;
+				if(_insertInto == "") _insertInto = entry;
 				else _insertInto += ", " + entry;
 			}
 
 			foreach (string entry in fields) {
-				if (_fields == "") _fields = entry;
+				if(_fields == "") _fields = entry;
 				else _fields += ", " + entry;
 			}
 
 			foreach (string entry in values) {
-				if (_values == "") _values = "'" + entry + "'";
+				if(_values == "") _values = "'" + entry + "'";
 				else _values += ", " + "'" + entry + "'";
 			}
 
 			//MessageBox.Show("INSERT INTO " + _insertInto + " (" + _fields + ") VALUES (" + _values + ")");
-			this.cmd.CommandText = "INSERT INTO " + _insertInto + " (" + _fields + ") VALUES (" + _values + ")";
+			this.cmd.CommandText = $"INSERT INTO {_insertInto} ({_fields}) VALUES ({_values})";
 
-			string errorMsg = "[InsertInto]: " + "INSERT INTO " + _insertInto + " (" + _fields + ") VALUES (" + _values + ")";
+			string errorMsg = $"[InsertInto]: INSERT INTO {_insertInto} ({_fields}) VALUES ({_values})";
 			return checkCmdForError(this.cmd, errorMsg);
 		}
 
@@ -132,11 +136,11 @@ namespace OutlookAccessInterface.Model
 			string _update = "";
 
 			foreach (string entry in update) {
-				if (_update == "") _update = entry;
+				if(_update == "") _update = entry;
 				else _update += ", " + entry;
 			}
 
-			this.cmd.CommandText = "UPDATE " + _update + " SET " + set + " WHERE " + where;
+			this.cmd.CommandText = $"UPDATE {_update} SET {set} WHERE {where}";
 
 			const string errorMsg = "[Update]";
 			return checkCmdForError(this.cmd, errorMsg);
@@ -149,11 +153,11 @@ namespace OutlookAccessInterface.Model
 			string _from = "";
 
 			foreach (string entry in from) {
-				if (_from == "") _from = entry;
+				if(_from == "") _from = entry;
 				else _from += ", " + entry;
 			}
 
-			this.cmd.CommandText = "DELETE FROM " + _from + " WHERE " + where;
+			this.cmd.CommandText = $"DELETE FROM {_from} WHERE {where}";
 
 			const string errorMsg = "[DeleteFrom]";
 			return checkCmdForError(this.cmd, errorMsg);

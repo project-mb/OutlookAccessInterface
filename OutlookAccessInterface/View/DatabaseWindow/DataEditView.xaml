@@ -1,12 +1,453 @@
 ﻿<UserControl x:Class="OutlookAccessInterface.View.DatabaseWindow.DataEditView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:OutlookAccessInterface.View.DatabaseWindow"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        
-    </Grid>
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 
+			 xmlns:bindingSources="clr-namespace:OutlookAccessInterface.View.BindingSources"
+
+			 mc:Ignorable="d"
+			 d:DesignWidth="1765"
+			 d:DesignHeight="450">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="60" />
+			<RowDefinition />
+			<RowDefinition Height="70" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="16,16,16,16">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100" />
+				<ColumnDefinition Width="160" />
+				<ColumnDefinition Width="70" />
+				<ColumnDefinition Width="70" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="95" />
+			</Grid.ColumnDefinitions>
+
+			<Label x:Name="l_date"
+				   Grid.Column="0"
+				   Content="-"
+				   Width="80"
+				   HorizontalAlignment="Left"
+				   BorderBrush="Black"
+				   BorderThickness="0.5"
+				   TabIndex="10" />
+
+			<ComboBox x:Name="cb_dayType"
+					  Grid.Column="1"
+					  Width="140"
+					  HorizontalAlignment="Left"
+					  TabIndex="11"
+					  ItemsSource="{Binding Clients}"
+					  SelectedValue="{Binding SelectedDayType, UpdateSourceTrigger=PropertyChanged}"
+					  SelectedIndex="{Binding DayTypeIdx, Mode=OneWayToSource}" />
+
+			<Label x:Name="l_dayStart"
+				   Grid.Column="2"
+				   Content="-"
+				   Width="50"
+				   HorizontalAlignment="Left"
+				   BorderBrush="Black"
+				   BorderThickness="0.5"
+				   SnapsToDevicePixels="True"
+				   TabIndex="12" />
+
+			<Label x:Name="l_dayEnd"
+				   Grid.Column="3"
+				   Content="-"
+				   Width="50"
+				   HorizontalAlignment="Left"
+				   VerticalAlignment="Top"
+				   BorderBrush="Black"
+				   BorderThickness="0.5"
+				   SnapsToDevicePixels="True"
+				   TabIndex="12" />
+
+
+			<Button x:Name="bt_deleteDay"
+					Grid.Column="5"
+					Content="Delete Day"
+					Width="75"
+					Height="25"
+					HorizontalAlignment="Right" />
+		</Grid>
+
+		<ListView x:Name="lv_dayRecords"
+				  Grid.Row="1"
+				  Margin="16,0,16,0"
+				  HorizontalAlignment="Stretch"
+				  TabIndex="100">
+			<ListView.DataContext>
+				<bindingSources:RecordItem />
+			</ListView.DataContext>
+
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalAlignment" Value="Left" />
+					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+					<Setter Property="Background" Value="{Binding Backcolor, UpdateSourceTrigger=PropertyChanged}" />
+					<Style.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Background" Value="{Binding Backcolor_IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" Value="{Binding Backcolor_IsModified, UpdateSourceTrigger=PropertyChanged}" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListView.ItemContainerStyle>
+			<ListView.View>
+				<GridView>
+					<GridView.ColumnHeaderContainerStyle>
+						<Style TargetType="GridViewColumnHeader">
+							<Setter Property="HorizontalAlignment" Value="Stretch" />
+						</Style>
+					</GridView.ColumnHeaderContainerStyle>
+
+					<!--ListView Column Templates-->
+					<!--Clients-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_client" Content="Mandant" Margin="20,0,0,0" SizeChanged="Ch_client_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox x:Name="cb_clients"
+										  Height="32"
+										  Margin="20,0,0,0"
+										  IsEditable="True"
+										  FontSize="12"
+										  StaysOpenOnEdit="True"
+										  ItemsSource="{Binding DbClients}"
+										  SelectedValue="{Binding SelectedClient}"
+										  SelectedIndex="{Binding ClientIdx, Mode=OneWayToSource}">
+									
+									<ComboBox.ItemContainerStyle>
+										<Style TargetType="{x:Type ComboBoxItem}">
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate>
+														<Grid x:Name="gd" TextElement.Foreground="Black">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+															<Label Padding="5" Grid.Column="0" Content="{Binding ClientName}" />
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger Property="ComboBoxItem.IsSelected" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="LightGray" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+															<Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="MediumSeaGreen" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ComboBox.ItemContainerStyle>
+								</ComboBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: Clients-->
+
+					<!--Projects-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_project" Content="Projekt" SizeChanged="Ch_project_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox x:Name="cb_projects"
+										  Height="32"
+										  IsEditable="True"
+										  FontSize="12"
+										  StaysOpenOnEdit="True"
+										  ItemsSource="{Binding Projects}"
+										  SelectedValue="{Binding SelectedProject, UpdateSourceTrigger=PropertyChanged}"
+										  SelectedIndex="{Binding ProjectIdx, Mode=OneWayToSource}">
+
+									<ComboBox.ItemContainerStyle>
+										<Style TargetType="{x:Type ComboBoxItem}">
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate>
+														<Grid x:Name="gd" TextElement.Foreground="Black">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+															<Label Padding="5" Grid.Column="0" Content="{Binding ProjectName}" />
+															<Label Padding="5" Grid.Column="1" Content="{Binding ProjectNumber}"
+																   BorderThickness="0.5,0,0,0"
+																   MinWidth="60"
+																   HorizontalContentAlignment="Right"
+																   HorizontalAlignment="Right"
+																   BorderBrush="Black" />
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger Property="ComboBoxItem.IsSelected" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="LightGray" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+															<Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="MediumSeaGreen" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ComboBox.ItemContainerStyle>
+								</ComboBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: Projects-->
+
+					<!--WorkTypes-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_workType" Content="Tätigkeit" SizeChanged="Ch_workType_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox x:Name="cb_workTypes"
+										  Height="32"
+										  IsEditable="True"
+										  FontSize="12"
+										  ItemsSource="{Binding WorkTypes}"
+										  SelectedValue="{Binding SelectedWorkType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+										  SelectedIndex="{Binding WorkTypeIdx, Mode=OneWayToSource}">
+
+									<ComboBox.ItemContainerStyle>
+										<Style TargetType="{x:Type ComboBoxItem}">
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate>
+														<Grid x:Name="gd" TextElement.Foreground="Black">
+															<Label Padding="5" Content="{Binding WorkTypeName}" />
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger Property="ComboBoxItem.IsSelected" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="LightGray" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+															<Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="MediumSeaGreen" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ComboBox.ItemContainerStyle>
+								</ComboBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: WorkTypes-->
+
+					<!--Duration-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_duration" Content="Dauer" SizeChanged="Ch_duration_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBox Height="32">
+									<TextBox.Text>
+										<Binding Path="Duration" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+											<!-- <Binding.ValidationRules> -->
+											<!-- 	<local:RangeRule_Duration Min="0" Max="24"/> -->
+											<!-- </Binding.ValidationRules> -->
+										</Binding>
+									</TextBox.Text>
+								</TextBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: Duration-->
+
+					<!--Addition-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_addition" Content="Ergänzung" SizeChanged="Ch_addition_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBox Text="{Binding Addition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Height="32" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: Addition-->
+
+					<!--CostCentreClients-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_costCentreClient" Content="KST bei Mandant" SizeChanged="Ch_costCentreClient_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox x:Name="cb_costCentreClients"
+										  Height="32"
+										  IsEditable="True"
+										  FontSize="12"
+										  ItemsSource="{Binding CostCentreClients}"
+										  SelectedValue="{Binding SelectedCCC, UpdateSourceTrigger=PropertyChanged}"
+										  SelectedIndex="{Binding CCCIdx, Mode=OneWayToSource}">
+
+									<ComboBox.ItemContainerStyle>
+										<Style TargetType="{x:Type ComboBoxItem}">
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate>
+														<Grid x:Name="gd" TextElement.Foreground="Black">
+															<Grid.ColumnDefinitions>
+																<ColumnDefinition />
+																<ColumnDefinition />
+															</Grid.ColumnDefinitions>
+															<Label Padding="5" Grid.Column="0" Content="{Binding CCCProject}" />
+															<Grid Grid.Column="1" HorizontalAlignment="Right" MinWidth="450">
+																<Grid.ColumnDefinitions>
+																	<ColumnDefinition />
+																	<ColumnDefinition />
+																</Grid.ColumnDefinitions>
+																<Label Padding="5" Grid.Column="0" Content="{Binding CCCName}"
+																	   BorderThickness="0.5,0,0,0"
+																	   BorderBrush="Black" />
+																<Label Padding="5" Grid.Column="1" Content="{Binding CCCNumber}"
+																	   BorderThickness="0.5,0,0,0"
+																	   MinWidth="60"
+																	   HorizontalContentAlignment="Right"
+																	   HorizontalAlignment="Right"
+																	   BorderBrush="Black" />
+															</Grid>
+
+														</Grid>
+														<ControlTemplate.Triggers>
+															<Trigger Property="ComboBoxItem.IsSelected" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="LightGray" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+															<Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+																<Setter TargetName="gd" Property="Background" Value="MediumSeaGreen" />
+																<Setter TargetName="gd" Property="TextElement.Foreground" Value="White" />
+															</Trigger>
+														</ControlTemplate.Triggers>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+										</Style>
+									</ComboBox.ItemContainerStyle>
+								</ComboBox>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: CostCentreClients-->
+
+					<!--CC-->
+					<GridViewColumn>
+						<GridViewColumnHeader x:Name="ch_kst" Content="KST" SizeChanged="Ch_kst_OnSizeChangedSizeChanged" />
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<Label
+									Height="26"
+									Content="{Binding CC}"
+									BorderThickness="0.5"
+									BorderBrush="Black" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<!--End: CC-->
+				</GridView>
+			</ListView.View>
+		</ListView>
+
+		<Grid Grid.Row="2" Margin="16,16,16,16">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="1*" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="120" />
+				<ColumnDefinition Width="1*" />
+				<ColumnDefinition Width="120" />
+			</Grid.ColumnDefinitions>
+
+			<Button x:Name="bt_previousDay"
+					Grid.Column="0"
+					Width="100"
+					HorizontalAlignment="Left"
+					TabIndex="1000"
+					Click="bt_previousDay_OnClick">
+				<TextBlock TextAlignment="Center">Previous</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_removeSelection"
+					Grid.Column="2"
+					Width="100"
+					HorizontalAlignment="Center"
+					TabIndex="1001"
+					Click="bt_removeSelection_OnClick">
+				<TextBlock TextAlignment="Center">Deselect<LineBreak />All</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_copyRecords"
+					Grid.Column="3"
+					Width="100"
+					HorizontalAlignment="Center">
+				<TextBlock TextAlignment="Center">Copy<LineBreak />Selected</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_cutRecords"
+					Grid.Column="4"
+					Width="100"
+					HorizontalAlignment="Center">
+				<TextBlock TextAlignment="Center">Cut<LineBreak />Selected</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_pasteRecords"
+					Grid.Column="5"
+					Width="100"
+					HorizontalAlignment="Center">
+				<TextBlock TextAlignment="Center">Paste</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_addRecord"
+					Grid.Column="6"
+					Width="100"
+					HorizontalAlignment="Center"
+					TabIndex="1004"
+					Click="bt_addRecord_OnClickClick">
+				<TextBlock TextAlignment="Center">Add</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_removeRecords"
+					Grid.Column="7"
+					Width="100"
+					HorizontalAlignment="Center"
+					Click="bt_removeRecords_OnClickClick" TabIndex="1002">
+				<TextBlock TextAlignment="Center">Remove<LineBreak />Selected</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_mergeRecord"
+					Grid.Column="8"
+					Width="100"
+					HorizontalAlignment="Center"
+					TabIndex="1003">
+				<TextBlock TextAlignment="Center">Merge<LineBreak />Selected</TextBlock>
+			</Button>
+
+			<Button x:Name="bt_nextDay"
+					Grid.Column="10"
+					Width="100"
+					HorizontalAlignment="Right"
+					TabIndex="1008"
+					Click="Bt_nextDay_OnClickClick">
+				<TextBlock TextAlignment="Center">Next</TextBlock>
+			</Button>
+		</Grid>
+
+	</Grid>
 </UserControl>

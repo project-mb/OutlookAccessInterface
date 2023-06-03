@@ -1,6 +1,6 @@
 ﻿namespace OutlookAccessInterface.ConfigController
 {
-	public class JsonParser
+	public class JsonWriter
 	{
 	}
 }

@@ -5,28 +5,29 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows.Forms;
+using OutlookAccessInterface.Exceptions;
 
 namespace OutlookAccessInterface.ConfigController.ConfigObjects
 {
 	public static class Config
 	{
-		public static readonly string ConfigFile = FileLocations.defaultconfDir;
+		public static readonly string CONFIGFILE = FileLocations.DEFAULT_CONFDIR;
 
 		public static int loadConfigFile()
 		{
-			if (!File.Exists(ConfigFile)) return -1;
+			if(!File.Exists(CONFIGFILE)) throw new NotJsonFileException("file does not exist");
 
 			//N: check if file is .json file
-			int indexOfExtension = ConfigFile.IndexOf(".json", StringComparison.Ordinal);
-			if (indexOfExtension <= 0) return -3;
-			string configFileWithoutExt = ConfigFile.Remove(indexOfExtension, 5);
+			int indexOfExtension = CONFIGFILE.IndexOf(".json", StringComparison.Ordinal);
+			if(indexOfExtension <= 0) throw new NotValidJsonException("file is not type json");
+			string configFileWithoutExt = CONFIGFILE.Remove(indexOfExtension, 5);
 
 			//N: get JSON objects
-			string jsonString = File.ReadAllText(ConfigFile);
+			string jsonString = File.ReadAllText(CONFIGFILE);
 			Dictionary<string, object> config = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
 
 			int errorCode = -2;
-			if (config != null) {
+			if(config != null) {
 				//N: get each json object
 				foreach (KeyValuePair<string, object> jsonObject in config) {
 					//NSEC: converts jsonObject into string array without json characters
@@ -61,10 +62,10 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 				}
 			}
 
-			if (errorCode > 0) return 0;
+			if(errorCode > 0) return 0;
 
 			//N: configFile at path could be corrupted
-			File.Copy(ConfigFile, configFileWithoutExt + "_Backup" + DateTime.Now.Date.ToShortDateString().Replace(".", ""));
+			//File.Copy(ConfigFile, configFileWithoutExt + "_Backup" + DateTime.Now.Date.ToShortDateString().Replace(".", ""));
 			return -2;
 		}
 
@@ -72,13 +73,13 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 		{
 			Dictionary<string, object> fileLocationConfig = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
 
-			if (fileLocationConfig == null) return -2;
+			if(fileLocationConfig == null) return -2;
 
 			foreach (KeyValuePair<string, object> jsonObject in fileLocationConfig) {
 				string value = jsonObject.Value.ToString();
 
 				PropertyInfo fi = typeof(FileLocations).GetProperty(jsonObject.Key);
-				if (fi != null) fi.SetValue(null, value);
+				if(fi != null) fi.SetValue(null, value);
 				else return -2;
 			}
 
@@ -87,14 +88,14 @@ namespace OutlookAccessInterface.ConfigController.ConfigObjects
 
 		private static int loadCalendarFilter(string[] arr)
 		{
-			Filters.CalFilter = arr;
-			return Filters.CalFilter.Length;
+			FileFilters.CalendarFilter = arr;
+			return FileFilters.CalendarFilter.Length;
 		}
 
 		private static int loadDatabaseFilter(string[] arr)
 		{
-			Filters.DatFilter = arr;
-			return Filters.DatFilter.Length;
+			FileFilters.DatabaseFilter = arr;
+			return FileFilters.DatabaseFilter.Length;
 		}
 
 		private static int loadHolidays(string[] arr)

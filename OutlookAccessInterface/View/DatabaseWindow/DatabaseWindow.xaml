@@ -19,11 +19,17 @@
                 <uc:NewProjectTab/>
             </TabItem>
 
-            <TabItem Header="NewCCCs" IsEnabled="True"></TabItem>
+            <TabItem Header="NewCCCs" IsEnabled="True">
+                <uc:NewCCCTab/>
+            </TabItem>
 
-            <TabItem Header="EditData" IsEnabled="True"></TabItem>
+            <TabItem Header="EditData" IsEnabled="True">
+                <uc:DataEditView/>
+            </TabItem>
 
-            <TabItem Header="Settings"></TabItem>
+            <TabItem Header="Settings">
+                <uc:SettingsView/>
+            </TabItem>
 
         </TabControl>
     </Grid>
