@@ -16,7 +16,7 @@ namespace OutlookAccessInterface.Model
 	{
 		//Singleton
 		private static ICSReader _reader;
-		public static ICSReader create(string calendarFilePath) { return _reader ?? (_reader = new ICSReader(calendarFilePath)); }
+		public static ICSReader create(string calendarFilePath) { return _reader ??= new ICSReader(calendarFilePath); }
 		public static void release() { _reader = null; }
 
 		private ICSReader(string calendarFilePath)
@@ -104,6 +104,8 @@ namespace OutlookAccessInterface.Model
 
 			DateTime calStartDate = Convert.ToDateTime(startDate);
 			DateTime calEndDate = Convert.ToDateTime(endDate);
+
+			List<CalEvent> calEvents = new List<CalEvent>();
 
 			foreach (IEvent evnt in calendarCollection.Events) {
 				if(evnt.Start.Date.CompareTo(calStartDate) < 0 || evnt.Start.Date.CompareTo(calEndDate) > 0) return;
