@@ -1,9 +1,8 @@
-﻿namespace OutlookAccessInterface.Model.DatabaseProperties
+﻿namespace OutlookAccessInterface.model.databaseProperties;
+
+public enum EntryType
 {
-	public enum EntryType
-	{
-		NEW,
-		MODIFIED,
-		DELETED
-	}
+	NEW,
+	MODIFIED,
+	DELETED
 }

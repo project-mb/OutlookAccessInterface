@@ -1,27 +1,27 @@
 ﻿<Window
-    x:Class="OutlookAccessInterface.View.MainWindow.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:uc="clr-namespace:OutlookAccessInterface.View.MainWindow"
-    mc:Ignorable="d"
+	x:Class="OutlookAccessInterface.view.mainWindow.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:uc="clr-namespace:OutlookAccessInterface.view.mainWindow"
+	mc:Ignorable="d"
 
-    Title="OAInterface"
-    Width="540"
-    Height="300"
-    WindowStartupLocation="CenterScreen"
-    ResizeMode="NoResize">
-    
-    <Grid>
-        <TabControl>
-            <TabItem Header="Selection">
-                <uc:SelectionView/>
-            </TabItem>
-            
-            <TabItem Header="Settings">
-                <uc:SettingsView/>
-            </TabItem>
-        </TabControl>
-    </Grid>
+	Title="OAInterface"
+	Width="540"
+	Height="300"
+	WindowStartupLocation="CenterScreen"
+	ResizeMode="NoResize">
+
+	<Grid>
+		<TabControl>
+			<TabItem Header="Selection">
+				<uc:SelectionView />
+			</TabItem>
+
+			<TabItem Header="Settings">
+				<uc:SettingsView />
+			</TabItem>
+		</TabControl>
+	</Grid>
 </Window>

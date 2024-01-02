@@ -1,14 +1,13 @@
-﻿namespace OutlookAccessInterface.Model.DatabaseProperties
-{
-	public class DBWorkType : DBBaseObject
-	{
-		private string workType;
-		private string addition;
+﻿namespace OutlookAccessInterface.model.databaseProperties;
 
-		public DBWorkType(int id, EntryType entryType, string workType, string addition) : base(id, entryType)
-		{
-			this.workType = workType;
-			this.addition = addition;
-		}
+public class DBWorkType : DBBaseObject
+{
+	private string addition;
+	private string workType;
+
+	public DBWorkType(int id, EntryType entryType, string workType, string addition) : base(id, entryType)
+	{
+		this.workType = workType;
+		this.addition = addition;
 	}
 }

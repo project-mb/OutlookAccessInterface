@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace OutlookAccessInterface.Exceptions
+namespace OutlookAccessInterface.exceptions.jsonException;
+
+public class NotJsonFileException : JsonException
 {
-	public class NotJsonFileException : JsonException
-	{
-		public NotJsonFileException(string message) : base(message) { }
-		public NotJsonFileException(string message, Exception innerException) : base(message, innerException) { }
-	}
+	public NotJsonFileException(string message) : base(message) { }
+	public NotJsonFileException(string message, Exception innerException) : base(message, innerException) { }
 }

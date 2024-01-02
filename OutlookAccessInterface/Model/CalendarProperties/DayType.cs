@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
+﻿namespace OutlookAccessInterface.model.calendarProperties;
 
-namespace OutlookAccessInterface.Model.CalendarProperties
+public class DayType
 {
-	public class DayType
+	public string Type { get; private set; }
+	public List<string> Types { get; }
+
+	public string SelectedDayType
 	{
-		public string Type { get; private set; }
-		public List<string> Types { get; }
-
-		public string SelectedDayType
-		{
-			get => Type;
-			set => Type = value;
-		}
-
-		public int TypeIdx { get; }
+		get => Type;
+		set => Type = value;
 	}
+
+	public int TypeIdx { get; }
 }

@@ -1,14 +1,13 @@
-﻿namespace OutlookAccessInterface.Model.DatabaseProperties
-{
-	public abstract class DBBaseObject
-	{
-		private int id;
-		private EntryType entryType;
+﻿namespace OutlookAccessInterface.model.databaseProperties;
 
-		protected DBBaseObject(int id, EntryType entryType)
-		{
-			this.id = id;
-			this.entryType = entryType;
-		}
+public abstract class DBBaseObject
+{
+	private EntryType entryType;
+	private int id;
+
+	protected DBBaseObject(int id, EntryType entryType)
+	{
+		this.id = id;
+		this.entryType = entryType;
 	}
 }

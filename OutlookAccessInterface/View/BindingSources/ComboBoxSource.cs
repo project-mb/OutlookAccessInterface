@@ -1,31 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using OutlookAccessInterface.Model.DatabaseProperties;
-using OutlookAccessInterface.Model.Properties;
+using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.modelProperties;
 
-namespace OutlookAccessInterface.View.BindingSources
+namespace OutlookAccessInterface.view.bindingSources;
+
+public class ComboBoxSource
 {
-	public class ComboBoxSource
+	private ObservableCollection<DBClient> dbClients;
+	private List<CostCentreClient> dbCostCentreClients;
+	private List<DBDay> dbDays;
+
+	private List<DBDayType> dbDayTypes;
+	private List<DBProject> dbProjects;
+	private List<WorkType> dbWorkTypes;
+
+	public ObservableCollection<DBClient> DbClients
 	{
-		public event PropertyChangedEventHandler propertyChanged;
-
-		private List<DBDayType> dbDayTypes;
-		private List<DBDay> dbDays;
-		private ObservableCollection<DBClient> dbClients;
-		private List<DBProject> dbProjects;
-		private List<WorkType> dbWorkTypes;
-		private List<CostCentreClient> dbCostCentreClients;
-
-		public ObservableCollection<DBClient> DbClients
-		{
-			get => this.dbClients;
-			set {
-				this.dbClients = value;
-				onPropertyChanged(new PropertyChangedEventArgs("SelectedClient"));
-			}
+		get => this.dbClients;
+		set {
+			this.dbClients = value;
+			onPropertyChanged(new PropertyChangedEventArgs("SelectedClient"));
 		}
-
-		protected virtual void onPropertyChanged(PropertyChangedEventArgs e) { propertyChanged?.Invoke(this, e); }
 	}
+
+	public event PropertyChangedEventHandler propertyChanged;
+
+	protected virtual void onPropertyChanged(PropertyChangedEventArgs e) { propertyChanged?.Invoke(this, e); }
 }

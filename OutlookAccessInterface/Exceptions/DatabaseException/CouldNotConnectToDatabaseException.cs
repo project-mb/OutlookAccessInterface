@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace OutlookAccessInterface.exceptions.databaseException;
 
-namespace OutlookAccessInterface.Exceptions.DatabaseException
+public class CouldNotConnectToDatabaseException : DatabaseException
 {
-	public class CouldNotConnectToDatabaseException : DatabaseException
-	{
-		public CouldNotConnectToDatabaseException(string message) : base(message) { }
+	public CouldNotConnectToDatabaseException(string message) : base(message) { }
 
-		public CouldNotConnectToDatabaseException(string message, Exception innerException) : base(message, innerException) { }
-	}
+	public CouldNotConnectToDatabaseException(string message, Exception innerException) : base(message, innerException) { }
 }

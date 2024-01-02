@@ -1,0 +1,35 @@
+{
+  "FileLocations": {
+  },
+  "FileFilters": {
+    "CalendarFilter": [
+      "ics files (*.ics)|*.ics"
+    ],
+    "DatabaseFilter": [
+      "accdb files (*.accdb)|*.accdb"
+    ]
+  },
+  "CalendarFilters": {
+    "Holydays": [
+      "allerheiligen",
+      "christihimmelfahrt",
+      "mariämimmelfahrt",
+      "fronleichnam",
+      "ostersonntag",
+      "ostermontag",
+      "heiligedreikönige",
+      "mariäempfängnis",
+      "nationalfeiertag",
+      "neujahrstag",
+      "pfingstmontag",
+      "pfingstsonntag",
+      "tagderarbeit",
+      "weihnachtstag",
+      "stephanitag",
+      "gründonnerstag",
+      "karfreitag",
+      "silvester",
+      "heiligerabend"
+    ]
+  }
+}

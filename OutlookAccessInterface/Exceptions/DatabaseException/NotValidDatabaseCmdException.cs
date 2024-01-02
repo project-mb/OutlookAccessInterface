@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace OutlookAccessInterface.exceptions.databaseException;
 
-namespace OutlookAccessInterface.Exceptions.DatabaseException
+public class NotValidDatabaseCmdException : DatabaseException
 {
-	public class NotValidDatabaseCmdException : DatabaseException
-	{
-		public NotValidDatabaseCmdException(string message) : base(message) { }
+	public NotValidDatabaseCmdException(string message) : base(message) { }
 
-		public NotValidDatabaseCmdException(string message, Exception innerException) : base(message, innerException) { }
-	}
+	public NotValidDatabaseCmdException(string message, Exception innerException) : base(message, innerException) { }
 }

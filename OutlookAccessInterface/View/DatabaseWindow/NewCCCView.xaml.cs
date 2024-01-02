@@ -1,12 +1,8 @@
 ﻿using System.Windows.Controls;
 
-namespace OutlookAccessInterface.View.DatabaseWindow
+namespace OutlookAccessInterface.view.databaseWindow;
+
+public partial class NewCCCTab : UserControl
 {
-    public partial class NewCCCTab : UserControl
-    {
-        public NewCCCTab()
-        {
-            InitializeComponent();
-        }
-    }
+	public NewCCCTab() { InitializeComponent(); }
 }

@@ -1,7 +1,5 @@
-﻿namespace OutlookAccessInterface.Model.Properties
+﻿namespace OutlookAccessInterface.model.modelProperties;
+
+public class WorkType
 {
-    public class WorkType
-    {
-        
-    }
 }

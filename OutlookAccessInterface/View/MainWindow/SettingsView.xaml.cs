@@ -1,12 +1,8 @@
 ﻿using System.Windows.Controls;
 
-namespace OutlookAccessInterface.View.MainWindow
+namespace OutlookAccessInterface.view.mainWindow;
+
+public partial class SettingsView : UserControl
 {
-    public partial class SettingsView : UserControl
-    {
-        public SettingsView()
-        {
-            InitializeComponent();
-        }
-    }
+	public SettingsView() { InitializeComponent(); }
 }

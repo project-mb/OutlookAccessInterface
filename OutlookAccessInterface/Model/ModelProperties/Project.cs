@@ -1,7 +1,5 @@
-﻿namespace OutlookAccessInterface.Model.Properties
+﻿namespace OutlookAccessInterface.model.modelProperties;
+
+public class Project
 {
-    public class Project
-    {
-        
-    }
 }

@@ -1,36 +1,36 @@
 ﻿<Window
-    x:Class="OutlookAccessInterface.View.DatabaseWindow.DatabaseWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:uc="clr-namespace:OutlookAccessInterface.View.DatabaseWindow"
-    mc:Ignorable="d"
+	x:Class="OutlookAccessInterface.view.databaseWindow.DatabaseWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:uc="clr-namespace:OutlookAccessInterface.view.databaseWindow"
+	mc:Ignorable="d"
 
-    Title="OAInterface"
-    WindowStartupLocation="CenterOwner"
-    WindowState="Maximized"
-    Height="1080"
-    Width="1920">
-    
-    <Grid>
-        <TabControl Grid.ColumnSpan="5" Grid.RowSpan="4">
-            <TabItem Header="NewProjects">
-                <uc:NewProjectTab/>
-            </TabItem>
+	Title="OAInterface"
+	WindowStartupLocation="CenterOwner"
+	WindowState="Maximized"
+	Height="1080"
+	Width="1920">
 
-            <TabItem Header="NewCCCs" IsEnabled="True">
-                <uc:NewCCCTab/>
-            </TabItem>
+	<Grid>
+		<TabControl Grid.ColumnSpan="5" Grid.RowSpan="4">
+			<TabItem Header="NewProjects">
+				<uc:NewProjectTab />
+			</TabItem>
 
-            <TabItem Header="EditData" IsEnabled="True">
-                <uc:DataEditView/>
-            </TabItem>
+			<TabItem Header="NewCCCs" IsEnabled="True">
+				<uc:NewCCCTab />
+			</TabItem>
 
-            <TabItem Header="Settings">
-                <uc:SettingsView/>
-            </TabItem>
+			<TabItem Header="EditData" IsEnabled="True">
+				<uc:DataEditView />
+			</TabItem>
 
-        </TabControl>
-    </Grid>
+			<TabItem Header="Settings">
+				<uc:SettingsView />
+			</TabItem>
+
+		</TabControl>
+	</Grid>
 </Window>

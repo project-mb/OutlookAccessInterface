@@ -1,7 +1,5 @@
-﻿namespace OutlookAccessInterface.Controller
+﻿namespace OutlookAccessInterface.controller;
+
+public class Controller
 {
-    public class Controller
-    {
-        
-    }
 }

@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace OutlookAccessInterface.exceptions.calendarException;
 
-namespace OutlookAccessInterface.Exceptions.CalendarException
+public class CalendarException : Exception
 {
-	public class CalendarException : Exception
-	{
-		public CalendarException(string message) : base(message) { }
+	public CalendarException(string message) : base(message) { }
 
-		public CalendarException(string message, Exception innerException) : base(message, innerException) { }
-	}
+	public CalendarException(string message, Exception innerException) : base(message, innerException) { }
 }
