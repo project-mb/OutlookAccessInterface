@@ -2,34 +2,34 @@
 using System.Data.OleDb;
 using OutlookAccessInterface.exceptions.databaseException;
 
-namespace OutlookAccessInterface.model;
+namespace OutlookAccessInterface.utility;
 
 public class DatabaseConnection
 {
 	//Singleton
-	private static DatabaseConnection _connection;
+	private static DatabaseConnection _connection = null!;
 	private readonly OleDbConnection dbConnection;
+	public static DatabaseConnection create(string databaseFilePath) { return (_connection != null) ? _connection : _connection = new DatabaseConnection(databaseFilePath); }
+	private DatabaseConnection(string databaseFilePath)
+	{
+		this.dbConnection = new OleDbConnection();
+		this.dbConnection.ConnectionString = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + databaseFilePath + "; Persist Security Info = False;";
+	}
+	public static void release() { _connection = null; }
 
 
 	// fields
 	private OleDbCommand cmd;
 	private OleDbDataReader reader;
 
-	private DatabaseConnection(string databaseFilePath)
-	{
-		this.dbConnection = new OleDbConnection();
-		this.dbConnection.ConnectionString = "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + databaseFilePath + "; Persist Security Info = False;";
-	}
 
 	// getter-setter
 	private Dictionary<string, Dictionary<string, List<string>>> Tabels { get; } = new();
-	public static DatabaseConnection create(string databaseFilePath) { return _connection ?? (_connection = new DatabaseConnection(databaseFilePath)); }
-	public static void release() { _connection = null; }
 
 	~DatabaseConnection()
 	{
 		_connection = null;
-		disconnect();
+		this.disconnect();
 	}
 
 	// class methods
@@ -89,7 +89,7 @@ public class DatabaseConnection
 			foreach (string item in select)
 				output[item].Add(this.reader[item].ToString());
 
-		Tabels.Add(from, output);
+		this.Tabels.Add(from, output);
 
 		return output;
 	}
@@ -118,7 +118,7 @@ public class DatabaseConnection
 		this.cmd.CommandText = $"INSERT INTO {_insertInto} ({_fields}) VALUES ({_values})";
 
 		string errorMsg = $"[InsertInto]: INSERT INTO {_insertInto} ({_fields}) VALUES ({_values})";
-		return checkCmdForError(this.cmd, errorMsg);
+		return this.checkCmdForError(this.cmd, errorMsg);
 	}
 
 	public int Update(IEnumerable<string> update, string set, string where)
@@ -134,7 +134,7 @@ public class DatabaseConnection
 		this.cmd.CommandText = $"UPDATE {_update} SET {set} WHERE {where}";
 
 		const string errorMsg = "[Update]";
-		return checkCmdForError(this.cmd, errorMsg);
+		return this.checkCmdForError(this.cmd, errorMsg);
 	}
 
 	public int DeleteFrom(IEnumerable<string> from, string where)
@@ -150,6 +150,6 @@ public class DatabaseConnection
 		this.cmd.CommandText = $"DELETE FROM {_from} WHERE {where}";
 
 		const string errorMsg = "[DeleteFrom]";
-		return checkCmdForError(this.cmd, errorMsg);
+		return this.checkCmdForError(this.cmd, errorMsg);
 	}
 }

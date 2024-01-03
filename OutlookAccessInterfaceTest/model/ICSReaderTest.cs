@@ -1,5 +1,6 @@
 ﻿using OutlookAccessInterface.model;
 using OutlookAccessInterface.model.calendarProperties;
+using OutlookAccessInterface.utility;
 
 namespace OutlookAccessInterfaceTest.model;
 

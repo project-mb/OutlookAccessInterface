@@ -3,7 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using OutlookAccessInterface.controller.mainWindow;
 using OutlookAccessInterface.exceptions.oaiException;
-using static OutlookAccessInterface.controller.Util;
+using static OutlookAccessInterface.configuration.configObjects.Configuration;
+
 
 namespace OutlookAccessInterface.view.mainWindow;
 

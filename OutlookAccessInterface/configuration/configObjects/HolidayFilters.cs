@@ -1,9 +1,15 @@
-﻿namespace OutlookAccessInterface.configuration.configObjects;
+﻿using System.Runtime.CompilerServices;
 
-public static class HolidayFilters
+namespace OutlookAccessInterface.configuration.configObjects;
+
+public class HolidayFilters
 {
+	//NSEC: singleton
+	private static HolidayFilters _instance = null!;
+	public static HolidayFilters get_instance() { return (_instance != null) ? _instance : _instance = new HolidayFilters(); }
+
 	//NSEC: default holidays
-	public static readonly string[] defaultHolidays = {
+	private static readonly string[]? DEFAULT_HOLIDAYS = {
 		"allerheiligen",
 		"christihimmelfahrt",
 		"mariämimmelfahrt",
@@ -25,6 +31,10 @@ public static class HolidayFilters
 		"heiligerabend"
 	};
 
+	//NSEC: member attributes
+
 	//N: list of holidays
-	public static string[] holidays { get; internal set; }
+	public string[]? Holidays { get; private set; } = DEFAULT_HOLIDAYS;
+
+	public void set_holidays(string[]? holidays) { this.Holidays = holidays; }
 }

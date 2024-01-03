@@ -5,21 +5,25 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:uc="clr-namespace:OutlookAccessInterface.view.mainWindow"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	mc:Ignorable="d"
 
 	Title="OAInterface"
-	Width="540"
-	Height="300"
+	Width="{StaticResource global_mainWindow_width}"
+	Height="{StaticResource global_mainWindow_height}"
 	WindowStartupLocation="CenterScreen"
 	ResizeMode="NoResize">
 
 	<Grid>
+		<Grid.Resources>
+			<system:Double x:Key="ui_mainWindow_tabControl_headerHeight">24</system:Double>
+		</Grid.Resources>
 		<TabControl>
-			<TabItem Header="Selection">
+			<TabItem Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Selection">
 				<uc:SelectionView />
 			</TabItem>
 
-			<TabItem Header="Settings">
+			<TabItem Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Settings">
 				<uc:SettingsView />
 			</TabItem>
 		</TabControl>

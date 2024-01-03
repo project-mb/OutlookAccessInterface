@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:system="clr-namespace:System;assembly=mscorlib"
 			 mc:Ignorable="d"
 			 d:DesignWidth="540"
 			 d:DesignHeight="300">
@@ -29,83 +30,89 @@
 		<!-- CalendarFile -->
 		<Label x:Name="lb_selCalendarFile"
 			   Grid.Column="0" Grid.Row="1"
-			   Content="CalendarFile:"
-			   Height="32"
+			   Content="Calendar File"
+			   Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
 		<TextBox x:Name="tb_selCalendarFile"
 				 Grid.Column="2" Grid.Row="1"
 				 Text="Select"
-				 Height="32"
+				 Height="{StaticResource default_ui_height}"
 				 HorizontalAlignment="Stretch" VerticalAlignment="Top"
 				 HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
 				 IsReadOnly="True" />
 		<Button x:Name="bt_selCalendarFile"
 				Grid.Column="4" Grid.Row="1"
 				Content="Sel Calendar File"
-				Width="95" Height="32"
+				Width="{StaticResource default_ui_width}" Height="{StaticResource default_ui_height}"
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				Click="bt_selCalendarFile_OnClick" />
 
 		<!-- DatabaseFile -->
-		<Label x:Name="lb_selDatabaseFile"
+		<Label x:Name="lb_databaseFile"
 			   Grid.Column="0" Grid.Row="2"
-			   Content="DatabaseFile:"
-			   Height="32"
+			   Content="Database File"
+			   Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
 		<TextBox x:Name="tb_selDatabaseFile"
 				 Grid.Column="2" Grid.Row="2"
 				 Text="Select"
-				 Height="32"
+				 Height="{StaticResource default_ui_height}"
 				 HorizontalAlignment="Stretch" VerticalAlignment="Top"
 				 VerticalContentAlignment="Center"
 				 IsReadOnly="True" />
 		<Button x:Name="bt_selDatabaseFile"
 				Grid.Column="4" Grid.Row="2"
 				Content="Sel Database File"
-				Width="95" Height="32"
+				Width="{StaticResource default_ui_width}" Height="{StaticResource default_ui_height}"
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				Click="bt_selDatabaseFile_OnClick" />
 
-		<!-- BottomDate -->
-		<Label x:Name="lb_selBotDate"
+		<!-- FromDate -->
+		<Label x:Name="lb_fromDate"
 			   Grid.Column="0" Grid.Row="3"
-			   Content="BottomDate"
-			   Width="128" Height="32"
+			   Content="From Date"
+			   Width="128" Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
 		<DatePicker x:Name="dp_selBotDate"
 					Grid.Column="2" Grid.Row="3"
-					Height="32"
-					HorizontalAlignment="Left" VerticalAlignment="Top"
-					HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+					Height="{StaticResource default_ui_height}"
+					HorizontalAlignment="Stretch" VerticalAlignment="Top"
+					HorizontalContentAlignment="Left" VerticalContentAlignment="Center" />
 
-		<!-- TopDate -->
-		<Label x:Name="lb_selTopDate"
+		<!-- ToDate -->
+		<Label x:Name="lb_toDate"
 			   Grid.Column="0" Grid.Row="4"
-			   Content="TopDate"
-			   Width="128" Height="32"
+			   Content="To Date"
+			   Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
 		<DatePicker x:Name="dp_selTopDate"
 					Grid.Column="2" Grid.Row="4"
-					Height="32"
-					HorizontalAlignment="Left" VerticalAlignment="Top"
-					HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+					Height="{StaticResource default_ui_height}"
+					HorizontalAlignment="Stretch" VerticalAlignment="Top"
+					HorizontalContentAlignment="Left" VerticalContentAlignment="Center" />
 
 		<!-- ImportData -->
+		<Label x:Name="lb_importProgress"
+			   Grid.Column="0" Grid.Row="6"
+			   Content="Import Progress"
+			   Height="{StaticResource default_ui_height}"
+			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
+			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
 		<Button x:Name="bt_importData"
-				Grid.Column="4" Grid.Row="5"
+				Grid.Column="4" Grid.Row="6"
 				Content="Import Data"
-				Width="95" Height="32"
+				Width="{StaticResource default_ui_width}" Height="{StaticResource default_ui_height}"
 				HorizontalAlignment="Left" VerticalAlignment="Top"
 				HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
 				Click="bt_importData_OnClick" />
 		<ProgressBar x:Name="pb_importData"
-					 Grid.Column="4" Grid.Row="6"
-					 Width="95" Height="16"
-					 HorizontalAlignment="Left" VerticalAlignment="Top"
+					 Grid.Column="2" Grid.Row="6"
+					 Height="{StaticResource default_ui_height}"
+					 HorizontalAlignment="Stretch" VerticalAlignment="Top"
 					 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 	</Grid>
 </UserControl>

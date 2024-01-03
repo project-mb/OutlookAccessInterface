@@ -1,11 +1,19 @@
 ﻿<Application x:Class="OutlookAccessInterface.App"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:system="clr-namespace:System;assembly=mscorlib"
 			 StartupUri="/view/mainWindow/MainWindow.xaml">
 	<!-- StartupUri="/view/mainWindow/MainWindow.xaml" -->
 	<!-- StartupUri="/view/databaseWindow/DatabaseWindow.xaml" -->
 
 	<Application.Resources>
+		<system:Double x:Key="global_mainWindow_width">540</system:Double>
+		<system:Double x:Key="global_mainWindow_height">350</system:Double>
+		<system:Double x:Key="global_mainWindow_view_width">540</system:Double>
+		<system:Double x:Key="global_mainWindow_view_height">300</system:Double>
+		
+		<system:Double x:Key="default_ui_height">28</system:Double>
+		<system:Double x:Key="default_ui_width">95</system:Double>
 		<!-- /view/mainWindow/MainWindow.xaml -->
 		<!-- /view/databaseWindow/DatabaseWindow.xaml -->
 	</Application.Resources>

@@ -1,33 +1,50 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
 using OutlookAccessInterface.configuration.configObjects;
 using OutlookAccessInterface.exceptions.oaiException;
 using OutlookAccessInterface.model;
+using OutlookAccessInterface.utility;
 using static OutlookAccessInterface.configuration.configObjects.Config;
-using static OutlookAccessInterface.controller.Util;
+using static OutlookAccessInterface.utility.Utility;
+using static OutlookAccessInterface.configuration.configObjects.Configuration;
 
 namespace OutlookAccessInterface.controller.mainWindow;
 
 public class SelectionViewController
 {
+	//NSEC: singleton
+	private static SelectionViewController _instance = null!;
+	public static SelectionViewController get_instance() { return (_instance != null) ? _instance : _instance = new SelectionViewController(); }
+
 	public void onViewOpen()
 	{
 		//N: when application starts load previous config file
 		//handleLoadConfigFile(loadConfigFile());
+		// Debug.WriteLine("property: " + Utility.getProperty(typeof(FileLocations).GetProperty(nameof(FileLocations.Calendar_BasePath)), FileLocations.get_instance()));
+
+		// PropertyInfo info = typeof(FileLocations).GetProperty(nameof(FileLocations.Calendar_BasePath));
+		// object val = info?.GetValue(FileLocations.get_instance());
+		// string basePath = (val != null) ? val.ToString() : "FileLocations.DEFAULT_ROOT_BASEPATH";
+
+		// Debug.WriteLine(basePath);
 	}
 
-	public string bt_selCalendarFile_clickhandler() { return CALENDARFILE = getSelectedFile("CalDir", "Select Target Calendar", FileFilters.CalendarFilter); }
+	public string bt_selCalendarFile_clickhandler() { return CALENDARFILE = getSelectedFile(nameof(Configuration.FileLocations.Calendar_BasePath), "Select Target Calendar", Configuration.FileFilters.CalendarFilter); }
 
-	public string bt_selDatabaseFile_clickhandler() { return DATABASEFILE = getSelectedFile("DatDir", "Select Target Database", FileFilters.DatabaseFilter, ".accdb"); }
+	public string bt_selDatabaseFile_clickhandler() { return DATABASEFILE = getSelectedFile(nameof(Configuration.FileLocations.Database_BasePath), "Select Target Database", Configuration.FileFilters.DatabaseFilter, ".accdb"); }
 
 	public void bt_importData_clickHandler()
 	{
 		if(CALENDARFILE == null) throw new CalendarFileMissingException("calendar file missing");
 		if(DATABASEFILE == null) throw new DatabaseFileMissingException("database file missing");
 
-		DatabaseConnection database = DatabaseConnection.create(DATABASEFILE);
 		ICSReader reader = ICSReader.create(CALENDARFILE);
+		DatabaseConnection database = DatabaseConnection.create(DATABASEFILE);
 
-		reader.getCalendarEventsFromICSFile();
+		reader.get_calendarEventsFromICSFile();
+		// database.Select();
+		Debug.WriteLine("");
 	}
 
 	//NSEC: throws information if config file could not be loaded correctly

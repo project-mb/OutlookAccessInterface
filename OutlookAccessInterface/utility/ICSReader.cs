@@ -6,25 +6,29 @@ using Ical.Net.Interfaces.DataTypes;
 using OutlookAccessInterface.model.calendarProperties;
 using Calendar = Ical.Net.Calendar;
 
-namespace OutlookAccessInterface.model;
+namespace OutlookAccessInterface.utility;
 
 public class ICSReader
 {
-	//Singleton
-	private static ICSReader _reader;
+	//NSEC: singleton
+	private static ICSReader _reader = null!;
+	public static ICSReader create(string calendarFilePath) { return (_reader != null) ? _reader : _reader = new ICSReader(calendarFilePath); }
+	public static void release() { _reader = null; }
+	~ICSReader() { _reader = null; }
 
 
 	private readonly string calendarFilePath;
+
 
 	private ICSReader(string calendarFilePath)
 	{
 		this.calendarFilePath = calendarFilePath;
 
-		CalendarEvents = new List<CalEvent>();
+		this.CalendarEvents = new List<CalEvent>();
 		// PublicHolidays = new List<CalEvent>();
-		OtherEvents = new List<CalEvent>();
-		CalendarDays = new List<CalDay>();
-		LutDayType = new List<DayType>();
+		this.OtherEvents = new List<CalEvent>();
+		this.CalendarDays = new List<CalDay>();
+		this.LutDayType = new List<DayType>();
 	}
 
 	private List<CalEvent> CalendarEvents { get; }
@@ -33,29 +37,26 @@ public class ICSReader
 	private List<CalEvent> OtherEvents { get; }
 	private List<CalDay> CalendarDays { get; }
 	private List<DayType> LutDayType { get; }
-	public static ICSReader create(string calendarFilePath) { return _reader ??= new ICSReader(calendarFilePath); }
-	public static void release() { _reader = null; }
 
-	~ICSReader() { _reader = null; }
 
 	// class methods
 	private CalEvent convertIcsEventToCalEvent(IEvent icsEvnt, bool other = false)
 	{
-		DateTime startDate = getCalEventTime(icsEvnt.Start);
-		DateTime endDate = getCalEventTime(icsEvnt.End);
+		DateTime startDate = this.get_calEventTime(icsEvnt.Start);
+		DateTime endDate = this.get_calEventTime(icsEvnt.End);
 
 		string startDateString = startDate.ToShortDateString();
 		string endDateString = endDate.ToShortDateString();
 		double startTime = Convert.ToDouble($"{startDate.Hour},{startDate.Minute}");
 		double endTime = Convert.ToDouble($"{endDate.Hour},{endDate.Minute}");
-		string evntClass = getCalEventClass(icsEvnt);
-		string summary = getCalEventSummary(icsEvnt);
+		string evntClass = this.get_calEventClass(icsEvnt);
+		string summary = this.get_calEventSummary(icsEvnt);
 
 		return !other ? new CalEvent(startDateString, endDateString, startTime, endTime, evntClass, summary) :
 			new CalEvent(startDateString, endDateString, evntClass, summary);
 	}
 
-	private DateTime getCalEventTime(IDateTime time)
+	private DateTime get_calEventTime(IDateTime time)
 	{
 		string timeString = time != null ? time.ToString() : "";
 		string[] timeSplit = timeString.Split(' ');
@@ -88,13 +89,14 @@ public class ICSReader
 		return new DateTime(date.Year, date.Month, date.Day, hour, minute, second);
 	}
 
-	private string getCalEventClass(IEvent icsEvent) { return icsEvent.Class ?? ""; }
-	private string getCalEventSummary(IEvent icsEvent) { return icsEvent.Summary != null ? icsEvent.Summary.TrimStart().TrimEnd() : ""; }
+	private string get_calEventClass(IEvent icsEvent) { return icsEvent.Class ?? ""; }
+
+	private string get_calEventSummary(IEvent icsEvent) { return icsEvent.Summary != null ? icsEvent.Summary.TrimStart().TrimEnd() : ""; }
 
 	private CalEventRecord convertCalEventToCalEventRecord(CalEvent calEvnt) { throw new NotImplementedException(); }
 
 	// methods
-	public void getCalendarEventsFromICSFile(string startDate = "01.01.0001", string endDate = "31.12.3000")
+	public void get_calendarEventsFromICSFile(string startDate = "01.01.0001", string endDate = "31.12.3000")
 	{
 		ICalendar calendarCollection = Calendar.LoadFromFile(this.calendarFilePath)[0];
 
@@ -111,11 +113,11 @@ public class ICSReader
 				Debug.Print("{0}|{1}:{2}|{3}:{4}|{5}|{6}|{7}", evnt.Start.Date.ToString(CultureInfo.CurrentCulture), evnt.Start.Hour, evnt.Start.Minute, evnt.End.Hour, evnt.End.Minute,
 					evnt.Duration, evnt.Class, evnt.Summary);
 
-				CalendarEvents.Add(convertIcsEventToCalEvent(evnt));
+				this.CalendarEvents.Add(this.convertIcsEventToCalEvent(evnt));
 			} else {
 				//TODO: make holiday list editable (maybe json)
 
-				OtherEvents.Add(convertIcsEventToCalEvent(evnt, true));
+				this.OtherEvents.Add(this.convertIcsEventToCalEvent(evnt, true));
 
 
 				//TODO: fix Bug; move function
