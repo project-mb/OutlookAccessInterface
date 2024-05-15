@@ -2,20 +2,23 @@
 
 public class CalDay
 {
-	public CalDay(string date, string dayType, double startTime, List<object> records)
+	//NSEC: class members
+	public static int ID { get; private set; } //	=> an unique identifier
+
+	//NSEC: instance members
+	public CalDay(DateTime date, string dayType, double startTime, List<CalEventRecord> records)
 	{
 		ID++;
-		Date = date;
-		DayType = dayType;
-		StartTime = startTime;
-		Records = records;
+		this.Date = date;
+		this.DayType = dayType;
+		this.StartTime = startTime;
+		this.Records = records;
 	}
 
-	private static int ID { get; set; } //	=> an unique identifier
+	//NSEC: fields
+	public DateTime Date { get; } //N: date of day
+	public string DayType { get; } //N: day type of day
 
-	private string Date { get; } //					=> date of day
-	private string DayType { get; } //				=> day type of day
-
-	private double StartTime { get; } //				=> start time of day
-	private List<object> Records { get; } //	=> all records that occured on that day
+	public double StartTime { get; } //N: start time of day
+	public List<CalEventRecord> Records { get; } //N: all CalEventRecords that occured on that day
 }

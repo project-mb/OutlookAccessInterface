@@ -2,7 +2,12 @@
 
 public class DBDayType : DBBaseObject
 {
-	private string dayType;
+	//NSEC: class members
+	public static List<DBDayType> DayTypes { get; }
 
-	public DBDayType(int id, EntryType entryType, string dayType) : base(id, entryType) { this.dayType = dayType; }
+	//NSEC: instance members
+	public DBDayType(int id, EntryType entryType, string dayType) : base(id, entryType) { this.DayType = dayType; }
+
+	//NSEC: fields
+	public string DayType { get; }
 }

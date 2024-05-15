@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Threading;
+using OutlookAccessInterface.__development__;
 using OutlookAccessInterface.configuration.configObjects;
 using OutlookAccessInterface.exceptions.oaiException;
-using OutlookAccessInterface.model;
 using OutlookAccessInterface.utility;
+using OutlookAccessInterface.view.mainWindow;
 using static OutlookAccessInterface.configuration.configObjects.Config;
-using static OutlookAccessInterface.utility.Utility;
 using static OutlookAccessInterface.configuration.configObjects.Configuration;
 
 namespace OutlookAccessInterface.controller.mainWindow;
@@ -14,8 +14,14 @@ namespace OutlookAccessInterface.controller.mainWindow;
 public class SelectionViewController
 {
 	//NSEC: singleton
-	private static SelectionViewController _instance = null!;
-	public static SelectionViewController get_instance() { return (_instance != null) ? _instance : _instance = new SelectionViewController(); }
+	private static SelectionViewController? _instance;
+	public static SelectionViewController? get_instance() { return _instance; }
+	public static SelectionViewController get_instance(SelectionView selectionView) { return _instance ??= new SelectionViewController(selectionView); }
+	private SelectionViewController(SelectionView selectionView) { this.selectionView = selectionView; }
+
+	//NSEC: fields
+	private readonly SelectionView selectionView;
+	private ImportHandler? importHandler;
 
 	public void onViewOpen()
 	{
@@ -30,23 +36,34 @@ public class SelectionViewController
 		// Debug.WriteLine(basePath);
 	}
 
-	public string bt_selCalendarFile_clickhandler() { return CALENDARFILE = getSelectedFile(nameof(Configuration.FileLocations.Calendar_BasePath), "Select Target Calendar", Configuration.FileFilters.CalendarFilter); }
-
-	public string bt_selDatabaseFile_clickhandler() { return DATABASEFILE = getSelectedFile(nameof(Configuration.FileLocations.Database_BasePath), "Select Target Database", Configuration.FileFilters.DatabaseFilter, ".accdb"); }
-
-	public void bt_importData_clickHandler()
+	//NSEC: clickhandler
+	public string bt_selCalendarFile_clickhandler() { return CALENDARFILE = Utility.getSelectedFile(nameof(Configuration.FileLocations.Calendar_BasePath), "Select Target Calendar", Configuration.FileFilters.CalendarFilter); }
+	public string bt_selDatabaseFile_clickhandler() { return DATABASEFILE = Utility.getSelectedFile(nameof(Configuration.FileLocations.Database_BasePath), "Select Target Database", Configuration.FileFilters.DatabaseFilter, ".accdb"); }
+	public void bt_importData_clickHandler(DateTime? fromDate, DateTime? toDate)
 	{
+		//NSEC: thread references for the import process
+		Thread th_import; //N: handles the reading of the .ics calendar file
+		Thread th_import_progress; //N: wait for the read process to finish; used for the GUI-progressBar
+
 		if(CALENDARFILE == null) throw new CalendarFileMissingException("calendar file missing");
 		if(DATABASEFILE == null) throw new DatabaseFileMissingException("database file missing");
 
-		ICSReader reader = ICSReader.create(CALENDARFILE);
-		DatabaseConnection database = DatabaseConnection.create(DATABASEFILE);
+		fromDate ??= Convert.ToDateTime(DEFAULT_FROMTIME);
+		toDate ??= Convert.ToDateTime(DEFAULT_TOTIME);
 
-		reader.get_calendarEventsFromICSFile();
-		// database.Select();
-		Debug.WriteLine("");
+		this.importHandler = ImportHandler.get_instance();
+		this.selectionView.lockView(true);
+
+		//TODO: tidy up and change to backgroundWorker
+		th_import = new Thread(() => this.importHandler.importData(fromDate, toDate));
+		th_import.Start();
+		th_import_progress = new Thread(() => Utility.runOnThreadFinish(th_import, handle_importProgress_finish));
+		th_import_progress.Start();
+
+		DebugTools.debug("test");
 	}
 
+	//NSEC: private methods
 	//NSEC: throws information if config file could not be loaded correctly
 	private void handleLoadConfigFile(int errorCode)
 	{
@@ -67,5 +84,11 @@ public class SelectionViewController
 		}
 
 		if(errorCode < 0) Environment.Exit(0);
+	}
+
+	private void handle_importProgress_finish()
+	{
+		this.selectionView.lockView(false);
+		Application.Current.Dispatcher.BeginInvoke(() => this.selectionView.lockView(true));
 	}
 }

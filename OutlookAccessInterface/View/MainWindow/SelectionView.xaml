@@ -76,11 +76,11 @@
 			   Width="128" Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
-		<DatePicker x:Name="dp_selBotDate"
+		<DatePicker x:Name="dp_selFromDate"
 					Grid.Column="2" Grid.Row="3"
 					Height="{StaticResource default_ui_height}"
 					HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					HorizontalContentAlignment="Left" VerticalContentAlignment="Center" />
+					HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" />
 
 		<!-- ToDate -->
 		<Label x:Name="lb_toDate"
@@ -89,11 +89,11 @@
 			   Height="{StaticResource default_ui_height}"
 			   HorizontalAlignment="Stretch" VerticalAlignment="Top"
 			   HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
-		<DatePicker x:Name="dp_selTopDate"
+		<DatePicker x:Name="dp_selToDate"
 					Grid.Column="2" Grid.Row="4"
 					Height="{StaticResource default_ui_height}"
 					HorizontalAlignment="Stretch" VerticalAlignment="Top"
-					HorizontalContentAlignment="Left" VerticalContentAlignment="Center" />
+					HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" />
 
 		<!-- ImportData -->
 		<Label x:Name="lb_importProgress"

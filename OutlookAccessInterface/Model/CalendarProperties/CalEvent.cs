@@ -1,17 +1,26 @@
 ﻿namespace OutlookAccessInterface.model.calendarProperties;
 
-public class CalEvent : CalBaseEvent
+public class CalEvent : CalBaseEvent, ICloneable
 {
-	// constructors
-	public CalEvent(string startDate, string endDate, double startTime, double endTime, string evntClass, string summary) : base(startDate, startTime, endTime)
-	{
-		EndDate = endDate;
-		_Class = evntClass;
-		Summary = summary;
-	}
+	//NSEC: class members
 
-	public CalEvent(string startDate, string endDate, string evntClass, string summary) : this(startDate, endDate, 0, 24, evntClass, summary) { }
-	private string EndDate { get; } //				=> date the event ended
-	private string _Class { get; } //				=> class of event (eg. private/public/...)
-	private string Summary { get; } //				=> content of event
+	//NSEC: instance members
+	public CalEvent(DateTime date, DateTime endDate, double startTime, double endTime, string evntClass, string summary) : base(date, startTime, endTime)
+	{
+		this.EndDate = endDate;
+		this._Class = evntClass;
+		this.Summary = summary;
+	}
+	public CalEvent(DateTime date, DateTime endDate, string evntClass, string summary) : this(date, endDate, 0, 24, evntClass, summary) { }
+
+	//NSEC: instance fields
+	public DateTime EndDate { get; private set; } //N: end date of event
+	public string _Class { get; } //N: class of event (eg. private/public/...)
+	public string Summary { get; } //N: content of event
+
+	//NSEC: instance setter
+	public void set_endDate(DateTime endDate) { this.EndDate = endDate; }
+
+	//NSEC: instance methods
+	public object Clone() { return this.MemberwiseClone(); }
 }

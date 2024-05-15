@@ -2,16 +2,21 @@
 
 public class DBProject : DBBaseObject
 {
-	private bool isArchived;
-	private bool notInSum;
-	private string projectName;
-	private int projectNumber;
+	//NSEC: class members
+	public static List<DBProject> Projects { get; }
 
+	//NSEC: instance members
 	public DBProject(int id, EntryType entryType, string projectName, int projectNumber, bool notInSum, bool isArchived) : base(id, entryType)
 	{
-		this.projectName = projectName;
-		this.projectNumber = projectNumber;
-		this.notInSum = notInSum;
-		this.isArchived = isArchived;
+		this.ProjectName = projectName;
+		this.ProjectNumber = projectNumber;
+		this.NotInSum = notInSum;
+		this.IsArchived = isArchived;
 	}
+
+	//NSEC: fields
+	public bool IsArchived { get; }
+	public bool NotInSum { get; }
+	public string ProjectName { get; }
+	public int ProjectNumber { get; }
 }

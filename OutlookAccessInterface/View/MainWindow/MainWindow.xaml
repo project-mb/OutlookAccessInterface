@@ -18,13 +18,15 @@
 		<Grid.Resources>
 			<system:Double x:Key="ui_mainWindow_tabControl_headerHeight">24</system:Double>
 		</Grid.Resources>
-		<TabControl>
-			<TabItem Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Selection">
-				<uc:SelectionView />
+		<TabControl x:Name="ui_mainWindow_tabControl">
+			<TabItem x:Name="ui_mainWindow_tabItem_selection"
+					 Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Selection">
+				<uc:SelectionView x:Name="ui_selectionView"/>
 			</TabItem>
 
-			<TabItem Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Settings">
-				<uc:SettingsView />
+			<TabItem x:Name="ui_mainWindow_tabItem_settings"
+					 Height="{StaticResource ui_mainWindow_tabControl_headerHeight}" Header="Settings">
+				<uc:SettingsView x:Name="ui_settingsView"/>
 			</TabItem>
 		</TabControl>
 	</Grid>

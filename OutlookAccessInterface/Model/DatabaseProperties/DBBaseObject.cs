@@ -2,12 +2,17 @@
 
 public abstract class DBBaseObject
 {
-	private EntryType entryType;
-	private int id;
-
+	//NSEC: class members
+	
+	
+	//NSEC: instance members
 	protected DBBaseObject(int id, EntryType entryType)
 	{
-		this.id = id;
-		this.entryType = entryType;
+		this.Id = id;
+		this.EntryType = entryType;
 	}
+	
+	//NSEC: fields
+	public int Id { get; }
+	public EntryType EntryType { get; }
 }

@@ -1,9 +1,14 @@
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Windows.Threading;
 using Microsoft.Win32;
+using OutlookAccessInterface.__development__;
 using OutlookAccessInterface.configuration.configObjects;
 
 namespace OutlookAccessInterface.utility;
+
+public delegate void Operation();
 
 public static class Utility
 {
@@ -11,10 +16,10 @@ public static class Utility
 
 	public static string getSelectedFile(string pathPropertyName, string title = "Select File", string[]? filter = null, string defaultExt = "", bool addExt = true)
 	{
-		string basePath = Utility.getProperty<string>(typeof(FileLocations).GetProperty(pathPropertyName), FileLocations.get_instance());
-		basePath = basePath != null ? basePath : FileLocations.DEFAULT_ROOT_BASEPATH;
+		string? basePath = Utility.getProperty<string>(typeof(FileLocations).GetProperty(pathPropertyName), FileLocations.get_instance());
+		basePath ??= FileLocations.DEFAULT_ROOT_BASEPATH;
 
-		string selectedFilePath = null;
+		string? selectedFilePath = null;
 
 		//N: converts filter array to filter string for OpenFileDialog
 		string filterStr = "";
@@ -34,21 +39,44 @@ public static class Utility
 		};
 
 		if(ofd.ShowDialog()!.Value) selectedFilePath = ofd.FileName;
-		if(!File.Exists(selectedFilePath)) selectedFilePath = null;
+		if(!File.Exists(selectedFilePath)) throw new FileNotFoundException(DebugTools.getDebugString());
 
 		return selectedFilePath;
 	}
-	
+
+	public static void runOnThreadFinish(Thread th, Operation func)
+	{
+		while (th.ThreadState != ThreadState.Stopped) { }
+		func();
+	}
+
+	public static void backgroundWorker_doWork(object sender, DoWorkEventArgs args)
+	{
+		// func();
+		args.Result = "backgroundWorker_doWork completed!";
+		DebugTools.debug("BackgroundWorker Finished");
+		throw new NotImplementedException();
+	}
+
+	public static void backgroundWorker_runWorkerCompleted(object sender, RunWorkerCompletedEventArgs args)
+	{
+		// func();
+		DebugTools.debug("BackgroundWorker run after completed");
+		throw new NotImplementedException();
+	}
+
 	public static bool setProperty<T>(PropertyInfo? property, T value)
 	{
-		if(property == null!) return false;
+		if(property == null) return false;
+
 		property.SetValue(null, value);
 		return true;
 	}
 
-	public static T getProperty<T>(PropertyInfo property, object target)
+	public static T? getProperty<T>(PropertyInfo? property, object target)
 	{
-		T value = (T) property.GetValue(target);
-		return value;
+		if(property == null) throw new NullReferenceException();
+
+		return (T?) property.GetValue(target);
 	}
 }

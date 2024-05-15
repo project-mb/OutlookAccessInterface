@@ -20,7 +20,6 @@
 
     <ItemGroup>
         <Folder Include="exceptions\"/>
-        <Folder Include="model\cells\"/>
         <Folder Include="view\"/>
     </ItemGroup>
 

@@ -2,6 +2,7 @@
 
 public enum EntryType
 {
+	EXISTING,
 	NEW,
 	MODIFIED,
 	DELETED

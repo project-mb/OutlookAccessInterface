@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Reflection;
 using System.Text.Json;
 using OutlookAccessInterface.exceptions.jsonException;
 using OutlookAccessInterface.utility;
@@ -42,7 +41,7 @@ public static class Config
 					"FileLocations" => loadFileLocations(jsonObject.Value.ToString()),
 					"CalendarFilter" => loadCalendarFilter(arr),
 					"DatabaseFilter" => loadDatabaseFilter(arr),
-					"Holydays" => loadHolidays(arr),
+					"Holydays" => loadHolidays(arr.ToList()),
 					_ => errorCode
 				};
 			}
@@ -54,7 +53,7 @@ public static class Config
 		return -2;
 	}
 
-	private static int loadFileLocations(string? jsonString)
+	private static int loadFileLocations(string jsonString)
 	{
 		Dictionary<string, object>? fileLocationConfig = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
 
@@ -81,9 +80,9 @@ public static class Config
 		return Configuration.FileFilters.DatabaseFilter.Length;
 	}
 
-	private static int loadHolidays(string[]? arr)
+	private static int loadHolidays(List<string>? arr)
 	{
 		Configuration.HolidayFilters.set_holidays(arr);
-		return Configuration.HolidayFilters.Holidays.Length;
+		return Configuration.HolidayFilters.Holidays.Count;
 	}
 }

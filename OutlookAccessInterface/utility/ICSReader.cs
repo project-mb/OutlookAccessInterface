@@ -1,76 +1,65 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-using Ical.Net.Interfaces;
+﻿using System.Globalization;
+using System.Windows.Documents;
 using Ical.Net.Interfaces.Components;
 using Ical.Net.Interfaces.DataTypes;
+using Ical.Net.Interfaces.General;
+using OutlookAccessInterface.__development__;
 using OutlookAccessInterface.model.calendarProperties;
+using OutlookAccessInterface.model.databaseProperties;
 using Calendar = Ical.Net.Calendar;
 
 namespace OutlookAccessInterface.utility;
 
-public class ICSReader
+public class ICSReader : ICalendarReader
 {
+	//NSEC: class members
+
+	//NSEC: instance members
 	//NSEC: singleton
-	private static ICSReader _reader = null!;
-	public static ICSReader create(string calendarFilePath) { return (_reader != null) ? _reader : _reader = new ICSReader(calendarFilePath); }
-	public static void release() { _reader = null; }
-	~ICSReader() { _reader = null; }
+	private static ICSReader? _instance;
+	public static ICSReader get_instance(string calendarFilePath) { return _instance ??= new ICSReader(calendarFilePath); }
+	public static void release_instance() { _instance = null; }
+	private ICSReader(string calendarFilePath) { this.calendarFilePath = calendarFilePath; }
 
-
+	//NSEC: fields
 	private readonly string calendarFilePath;
+	
 
-
-	private ICSReader(string calendarFilePath)
+	//NSEC: methods
+	private CalEvent convert_IEvent_to_CalEvent(IEvent icsEvnt, CalEventType eventType = CalEventType.NORMAL)
 	{
-		this.calendarFilePath = calendarFilePath;
+		DateTime startDate = get_calEventTime(icsEvnt.Start);
+		DateTime endDate = get_calEventTime(icsEvnt.End);
 
-		this.CalendarEvents = new List<CalEvent>();
-		// PublicHolidays = new List<CalEvent>();
-		this.OtherEvents = new List<CalEvent>();
-		this.CalendarDays = new List<CalDay>();
-		this.LutDayType = new List<DayType>();
-	}
-
-	private List<CalEvent> CalendarEvents { get; }
-
-	// private List<CalEvent> PublicHolidays { get; }
-	private List<CalEvent> OtherEvents { get; }
-	private List<CalDay> CalendarDays { get; }
-	private List<DayType> LutDayType { get; }
-
-
-	// class methods
-	private CalEvent convertIcsEventToCalEvent(IEvent icsEvnt, bool other = false)
-	{
-		DateTime startDate = this.get_calEventTime(icsEvnt.Start);
-		DateTime endDate = this.get_calEventTime(icsEvnt.End);
-
-		string startDateString = startDate.ToShortDateString();
-		string endDateString = endDate.ToShortDateString();
 		double startTime = Convert.ToDouble($"{startDate.Hour},{startDate.Minute}");
 		double endTime = Convert.ToDouble($"{endDate.Hour},{endDate.Minute}");
-		string evntClass = this.get_calEventClass(icsEvnt);
-		string summary = this.get_calEventSummary(icsEvnt);
+		string evntClass = get_calEventClass(icsEvnt);
+		string summary = get_calEventSummary(icsEvnt);
 
-		return !other ? new CalEvent(startDateString, endDateString, startTime, endTime, evntClass, summary) :
-			new CalEvent(startDateString, endDateString, evntClass, summary);
+		return eventType == CalEventType.NORMAL ?
+			new CalEvent(startDate, endDate, startTime, endTime, evntClass, summary) :
+			new CalEvent(startDate, endDate, evntClass, summary);
 	}
 
-	private DateTime get_calEventTime(IDateTime time)
+	private static DateTime get_calEventTime(IDateTime time)
 	{
-		string timeString = time != null ? time.ToString() : "";
-		string[] timeSplit = timeString.Split(' ');
+		string dateTimeString = time.ToString() ?? string.Empty;
+		string[] dateTimeSplit = dateTimeString.Split(' ');
 
 		// date
-		string dateString = timeString.Split(' ')[0];
+		string dateString = dateTimeSplit[0];
 		DateTime date = Convert.ToDateTime(dateString);
 
 		// time
-		if(timeSplit.Length <= 1) return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
+		if(dateTimeSplit.Length <= 1) return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
 
-		int hour = Convert.ToInt32(timeSplit[1].Split(':')[0]);
-		int minute = Convert.ToInt32(timeSplit[1].Split(':')[1]);
-		int second = Convert.ToInt32(timeSplit[1].Split(':')[2]);
+		string[] timeSplit = dateTimeSplit[1].Split(':');
+		int hour = Convert.ToInt32(timeSplit[0]);
+		int minute = Convert.ToInt32(timeSplit[1]);
+		int second = Convert.ToInt32(timeSplit[2]);
+
+		//N: convert 15, 30 and 45 to fracture, for example 15=0.25 based on 0.{minute}{second}
+		//N: this is necessary becaus DateTime hours, minutes and seconds only allow integers
 		switch (minute) {
 			case 15:
 				minute = 2;
@@ -89,41 +78,81 @@ public class ICSReader
 		return new DateTime(date.Year, date.Month, date.Day, hour, minute, second);
 	}
 
-	private string get_calEventClass(IEvent icsEvent) { return icsEvent.Class ?? ""; }
+	private static string get_calEventClass(IEvent icsEvent) { return icsEvent.Class ?? ""; }
 
-	private string get_calEventSummary(IEvent icsEvent) { return icsEvent.Summary != null ? icsEvent.Summary.TrimStart().TrimEnd() : ""; }
+	private static string get_calEventSummary(IEvent icsEvent) { return icsEvent.Summary != null ? icsEvent.Summary.TrimStart().TrimEnd() : ""; }
 
 	private CalEventRecord convertCalEventToCalEventRecord(CalEvent calEvnt) { throw new NotImplementedException(); }
 
 	// methods
-	public void get_calendarEventsFromICSFile(string startDate = "01.01.0001", string endDate = "31.12.3000")
+	private List<CalEvent> get_calendarEventsFromICSFile(DateTime? fromDate, DateTime? toDate)
 	{
-		ICalendar calendarCollection = Calendar.LoadFromFile(this.calendarFilePath)[0];
+		List<CalEvent> calEvents = [];
+		Dictionary<DateTime, CalDay> calDays = [];
+		List<DateTime> days = [];
 
-		DateTime calStartDate = Convert.ToDateTime(startDate);
-		DateTime calEndDate = Convert.ToDateTime(endDate);
+		CalEvent temp_calEvent;
+		CalEvent current_calEvent;
 
-		List<CalEvent> calEvents = new();
+		//N: load all events from ics file
+		IUniqueComponentList<IEvent> iEvents = Calendar.LoadFromFile(this.calendarFilePath)[0].Events;
 
-		foreach (IEvent evnt in calendarCollection.Events) {
-			if(evnt.Start.Date.CompareTo(calStartDate) < 0 || evnt.Start.Date.CompareTo(calEndDate) > 0) return;
+		foreach (IEvent evnt in iEvents) {
+			//N: filter out events outside from and to date
+			if(evnt.Start.Date.CompareTo(fromDate) < 0 || evnt.Start.Date.CompareTo(toDate) > 0) continue;
 
-			if(!evnt.IsAllDay) {
+			//N: filter out allDay events
+			if(evnt.IsAllDay) continue;
+
+			//N: create a temporary CalEvent in case it is a multiday event
+			temp_calEvent = this.convert_IEvent_to_CalEvent(evnt);
+
+			//N: split multiday events
+			TimeSpan timeSpan = evnt.End.Date - evnt.Start.Date;
+			int number_of_days = timeSpan.Days + 1;
+			DebugTools.debug($"is spaned over {number_of_days}");
+
+			//N: loop through the number of days an event spans over to create copies of these events
+			for (int i = 0; i < number_of_days; i++) {
+				current_calEvent = (CalEvent) temp_calEvent.Clone();
+				//TODO filter out endTimes that are 00:00:00
+				
+				//N: update time and date of multiday events
+				if(number_of_days > 1) {
+					temp_calEvent.set_date(temp_calEvent.Date.AddDays(1));
+					current_calEvent.set_startTime(0);
+					current_calEvent.set_date(temp_calEvent.Date);
+					current_calEvent.set_endDate(temp_calEvent.Date);
+					if(i < number_of_days) { current_calEvent.set_endTime(24); } else { current_calEvent.set_endTime(temp_calEvent.EndTime); }
+				}
+
+				//N: add the date of the event to the date list
+				if(!days.Contains(current_calEvent.Date)) { days.Add(current_calEvent.Date); }
+
+				calEvents.Add(current_calEvent);
+
 				//TODO: remove debug message
-				Debug.Print("{0}|{1}:{2}|{3}:{4}|{5}|{6}|{7}", evnt.Start.Date.ToString(CultureInfo.CurrentCulture), evnt.Start.Hour, evnt.Start.Minute, evnt.End.Hour, evnt.End.Minute,
-					evnt.Duration, evnt.Class, evnt.Summary);
-
-				this.CalendarEvents.Add(this.convertIcsEventToCalEvent(evnt));
-			} else {
-				//TODO: make holiday list editable (maybe json)
-
-				this.OtherEvents.Add(this.convertIcsEventToCalEvent(evnt, true));
-
-
-				//TODO: fix Bug; move function
-				//if (HolidayFilters.holidays.Contains(evnt.Summary.ToLower().Trim())) PublicHolidays.Add(new CalEvent(evnt.Start.ToString(), evnt.Summary));
-				//else OtherEvents.Add(new CalEvent(evnt.Start.ToString(), evnt.Summary));
+				DebugTools.info(String.Format("{0}|{1}:{2}|{3}:{4}|{5}|{6}|{7}", evnt.Start.Date.ToString(CultureInfo.CurrentCulture), evnt.Start.Hour, evnt.Start.Minute, evnt.End.Hour, evnt.End.Minute,
+					evnt.Duration, evnt.Class, evnt.Summary));
 			}
 		}
+
+		return calEvents;
 	}
+
+	public List<CalDay> get_calendarDaysWithRecords(DateTime? fromDate, DateTime? toDate)
+	{
+		List<CalEvent> calEvents = [];
+		List<CalDay> calDays = [];
+
+		calEvents = get_calendarEventsFromICSFile(fromDate, toDate);
+
+		throw new NotImplementedException();
+	}
+	
+	//NSEC: interface ICalendarReader
+	public List<DBDay> get_days() { throw new NotImplementedException(); }
+	public List<DBProject> get_projects() { throw new NotImplementedException(); }
+	public List<DBCostCentreClient> get_costCentreClients() { throw new NotImplementedException(); }
+	public List<DBRecord> get_records(DateTime? from, DateTime? to) { throw new NotImplementedException(); }
 }
