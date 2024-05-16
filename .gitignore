@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/outlookAccessInterface_model.mdj
+/OutlookAccessInterface/.idea/.idea.outlookAccessInterface/.idea/sqlDataSources.xml
+/OutlookAccessInterface/.idea/.idea.outlookAccessInterface/.idea/sqldialects.xml
