@@ -1,4 +1,4 @@
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.databaseEntityObjects;
 
 namespace OutlookAccessInterface.utility;
 

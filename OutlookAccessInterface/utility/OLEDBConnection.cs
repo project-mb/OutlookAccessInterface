@@ -72,6 +72,8 @@ public class OLEDBConnection : IDBConnection
 
 	Dictionary<string, List<string>> IDBConnection.select(string[] select, string from, string orderBy, string where)
 	{
+		//SELECT atr1, atr2, ... FROM table ORDER BY ... WHERE ...
+		
 		this.cmd = new OleDbCommand();
 
 		Dictionary<string, List<string>> output = new();
@@ -102,13 +104,14 @@ public class OLEDBConnection : IDBConnection
 			foreach (string item in select)
 				output[item].Add(this.reader[item].ToString() ?? throw new InvalidOperationException(DebugTools.getDebugString()));
 
-		// this.Tabels.Add(from, output);
 
 		return output;
 	}
 
 	int IDBConnection.insertInto(IEnumerable<string> insertInto, IEnumerable<string> fields, IEnumerable<string> values)
 	{
+		//INSERT INTO table1, table2, ... (atr1, atr2, ...) VALUES (val1, val2, ...)
+		
 		this.cmd = new OleDbCommand();
 
 		string _insertInto = "";
@@ -136,6 +139,7 @@ public class OLEDBConnection : IDBConnection
 
 	int IDBConnection.update(IEnumerable<string> update, string set, string where)
 	{
+		//UPDATE table1, table2, ... SET (atr1, atr2, ...) WHERE ...
 		this.cmd = new OleDbCommand();
 
 		string _update = "";

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using OutlookAccessInterface.configuration.configObjects;
 
 namespace OutlookAccessInterface.view.mainWindow;
 
@@ -19,5 +20,4 @@ public partial class MainWindow : Window
 	private SettingsView settingsView;
 
 	//NSEC: methods
-
 }

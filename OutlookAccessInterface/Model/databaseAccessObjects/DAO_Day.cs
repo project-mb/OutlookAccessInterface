@@ -1,41 +1,44 @@
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.configuration.configObjects;
+using OutlookAccessInterface.model.databaseEntityObjects;
 using OutlookAccessInterface.utility;
+using static OutlookAccessInterface.model.databaseEntityObjects.DBDay.Table;
 
 namespace OutlookAccessInterface.model.databaseAccessObjects;
 
-public class DAO_Day(IDBConnection idbConnection) : DAO_Base(idbConnection), IDAO<DBDay>
+public class DAO_Day(IDBConnection idbConnection) : IDAO<DBDay>
 {
 	public void create(DBDay DBObject)
 	{
-		this.idbConnection.insertInto(["Tage"], ["Datum", "Beginn", "Vorgabe", "Tagestyp"], [
-			DBObject.Date.ToString(),
-			DBObject.StartTime.ToString(),
-			DBObject.Specification.ToString(),
-			DBObject.DayType.Id.ToString()
+		idbConnection.insertInto([Table_Tage], [Datum, Beginn, Vorgabe, Tagestyp],
+		[
+			$"{Utility.dateTimeToString(DBObject.Date)}",
+			$"{DBObject.StartTime}",
+			$"{DBObject.Specification}",
+			$"{DBObject.DayType.Id}"
 		]);
 	}
 
 	public void update(DBDay DBObject)
 	{
-		this.idbConnection.update(["Tage"],
-			$"Datum = {DBObject.Date.ToString()}," +
-			$"Beginn = {DBObject.StartTime.ToString()}," +
-			$"Vorgabe = {DBObject.Specification.ToString()}," +
-			$"Tagestyp = {DBObject.DayType.Id}",
-			$"Tag_ID = {DBObject.Id}");
+		idbConnection.update([Table_Tage],
+			$"{Datum} = {Utility.dateTimeToString(DBObject.Date)}," +
+			$"{Beginn} = {DBObject.StartTime}," +
+			$"{Vorgabe} = {DBObject.Specification}," +
+			$"{Tagestyp} = {DBObject.DayType.Id}",
+			$"{Tag_ID} = {DBObject.Id}");
 	}
 
-	public void delete(DBDay DBObject) { this.idbConnection.deleteFrom(["Tage"], $"Tag_ID = {DBObject.Id}"); }
+	public void delete(DBDay DBObject) { idbConnection.deleteFrom([Table_Tage], $"{Tag_ID} = {DBObject.Id}"); }
 
 	public List<DBDay> select_all()
 	{
 		List<DBDay> days = [];
-		Dictionary<string, List<string>> table = this.idbConnection.select(["Tag_ID", "Datum", "Beginn", "Vorgabe", "Tagestyp"], "Tage");
+		Dictionary<string, List<string>> table = idbConnection.select([Tag_ID, Datum, Beginn, Vorgabe, Tagestyp], Table_Tage);
 
 		for (int i = 0; i < table.Count; i++) {
 			DBDay newDay = new(i, table);
 
-			if(RecordDatabase.Days.Exists(x => x.Date == newDay.Date)) continue;
+			if(RecordDatabase.Days.Exists(x => x.Id == newDay.Id)) continue;
 
 			days.Add(newDay);
 		}

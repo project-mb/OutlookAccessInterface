@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using OutlookAccessInterface.model.databaseAccessObjects;
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.databaseEntityObjects;
 
 namespace OutlookAccessInterface.utility;
 

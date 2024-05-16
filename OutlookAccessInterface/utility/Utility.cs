@@ -79,4 +79,9 @@ public static class Utility
 
 		return (T?) property.GetValue(target);
 	}
+
+	public static string dateTimeToString(DateTime dateTime)
+	{
+		return dateTime.ToString(Configuration.DATABASE_TIMEFORMAT);
+	}
 }

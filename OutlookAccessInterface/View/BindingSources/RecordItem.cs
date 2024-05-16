@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Media;
 using OutlookAccessInterface.__development__;
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.databaseEntityObjects;
 
 namespace OutlookAccessInterface.view.bindingSources;
 

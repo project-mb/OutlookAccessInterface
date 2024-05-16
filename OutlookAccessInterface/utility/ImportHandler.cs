@@ -17,11 +17,11 @@ public class ImportHandler
 
 	public void importData(DateTime? fromDate, DateTime? toDate)
 	{
-		this.reader = ICSReader.get_instance(CALENDARFILE);
 		this.database = RecordDatabase.get_instance(DATABASEFILE);
+		this.reader = ICSReader.get_instance(CALENDARFILE);
 
-		this.reader.get_records(fromDate, toDate);
 		this.database.init();
+		this.reader.get_records(fromDate, toDate);
 
 		Thread.Sleep(3000);
 	}

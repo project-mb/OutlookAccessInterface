@@ -5,7 +5,7 @@ using Ical.Net.Interfaces.DataTypes;
 using Ical.Net.Interfaces.General;
 using OutlookAccessInterface.__development__;
 using OutlookAccessInterface.model.calendarProperties;
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.databaseEntityObjects;
 using Calendar = Ical.Net.Calendar;
 
 namespace OutlookAccessInterface.utility;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using OutlookAccessInterface.model.databaseProperties;
+using OutlookAccessInterface.model.databaseEntityObjects;
 using OutlookAccessInterface.model.modelProperties;
 
 namespace OutlookAccessInterface.view.bindingSources;

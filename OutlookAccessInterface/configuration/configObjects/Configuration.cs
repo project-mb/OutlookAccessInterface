@@ -1,3 +1,5 @@
+using NUnit.Framework;
+
 namespace OutlookAccessInterface.configuration.configObjects;
 
 public static class Configuration
@@ -11,7 +13,8 @@ public static class Configuration
 
 	public const string DEFAULT_FROMTIME = "01.01.0001";
 	public const string DEFAULT_TOTIME = "31.12.3000";
-	
+	public const string DATABASE_TIMEFORMAT = "#yyyy-MM-dd HH:mm:ss#";
+
 	public static FileFilters FileFilters { get; } = FileFilters.get_instance();
 	public static FileLocations FileLocations { get; } = FileLocations.get_instance();
 	public static HolidayFilters HolidayFilters { get; } = HolidayFilters.get_instance();
