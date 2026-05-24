@@ -24,13 +24,13 @@ public class DAO_WorkType(IDBConnection idbConnection) : IDAO<DBWorkType>
 	}
 
 	public void delete(DBWorkType DBObject) { idbConnection.deleteFrom([Table_LU_Taetigkeit], $"{Taetigkeit_ID} = {DBObject.Id}"); }
-
+	
 	public List<DBWorkType> select_all()
 	{
 		List<DBWorkType> workTypes = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Taetigkeit_ID, Taetigkeit, Ergaenzung], Table_LU_Taetigkeit);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Taetigkeit_ID].Count; i++) {
 			DBWorkType newWorkType = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newWorkType.Id)) continue;

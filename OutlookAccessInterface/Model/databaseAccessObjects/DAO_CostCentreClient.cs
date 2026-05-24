@@ -30,7 +30,7 @@ public class DAO_CostCentreClient(IDBConnection idbConnection) : IDAO<DBCostCent
 		List<DBCostCentreClient> costCentreClients = [];
 		Dictionary<string, List<string>> table = idbConnection.select([KST_AG_ID, Mandant, Projekt, KST_Nummer_AG], Table_LU_Kostenstelle_AG);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[KST_AG_ID].Count; i++) {
 			DBCostCentreClient newCostCentreClient = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newCostCentreClient.Id)) continue;

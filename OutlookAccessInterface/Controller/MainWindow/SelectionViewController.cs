@@ -5,6 +5,7 @@ using OutlookAccessInterface.__development__;
 using OutlookAccessInterface.configuration.configObjects;
 using OutlookAccessInterface.exceptions.oaiException;
 using OutlookAccessInterface.utility;
+using OutlookAccessInterface.view.databaseWindow;
 using OutlookAccessInterface.view.mainWindow;
 using static OutlookAccessInterface.configuration.configObjects.Config;
 using static OutlookAccessInterface.configuration.configObjects.Configuration;
@@ -42,6 +43,8 @@ public class SelectionViewController
 	public void bt_importData_clickHandler(DateTime? fromDate, DateTime? toDate)
 	{
 		//NSEC: thread references for the import process
+		BackgroundWorker bgw_import = new();
+
 		Thread th_import; //N: handles the reading of the .ics calendar file
 		Thread th_import_progress; //N: wait for the read process to finish; used for the GUI-progressBar
 
@@ -55,10 +58,9 @@ public class SelectionViewController
 		this.selectionView.lockView(true);
 
 		//TODO: tidy up and change to backgroundWorker
-		th_import = new Thread(() => this.importHandler.importData(fromDate, toDate));
-		th_import.Start();
-		th_import_progress = new Thread(() => Utility.runOnThreadFinish(th_import, handle_importProgress_finish));
-		th_import_progress.Start();
+		bgw_import.DoWork += (_, _) => this.importHandler.importData(fromDate, toDate);
+		bgw_import.RunWorkerCompleted += (_, _) => handle_importProgress_finish();
+		bgw_import.RunWorkerAsync();
 
 		DebugTools.debug("test");
 	}
@@ -89,6 +91,10 @@ public class SelectionViewController
 	private void handle_importProgress_finish()
 	{
 		this.selectionView.lockView(false);
-		Application.Current.Dispatcher.BeginInvoke(() => this.selectionView.lockView(true));
+		MessageBox.Show("Finished");
+		DatabaseWindow window = new();
+		window.Show();
+		MainWindow.Instance.Close();
+		// Application.Current.Dispatcher.BeginInvoke(() => this.selectionView.lockView(true));
 	}
 }

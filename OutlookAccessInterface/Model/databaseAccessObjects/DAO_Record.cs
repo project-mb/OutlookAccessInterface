@@ -44,7 +44,7 @@ public class DAO_Record(IDBConnection idbConnection) : IDAO<DBRecord>
 		List<DBRecord> records = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Code, Datum, Projekt, Taetigkeit, Ergaenzung, Zeit, Mandant, KST_Mandant, Bool_alt, alt_Ref], Table_Zeiten);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Code].Count; i++) {
 			DBRecord newRecord = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newRecord.Id)) continue;

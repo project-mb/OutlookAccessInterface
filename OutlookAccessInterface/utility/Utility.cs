@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Threading;
@@ -80,8 +81,12 @@ public static class Utility
 		return (T?) property.GetValue(target);
 	}
 
-	public static string dateTimeToString(DateTime dateTime)
+	public static string dateTimeToString(DateTime dateTime) { return dateTime.ToString(Configuration.DATABASE_TIMEFORMAT); }
+	
+	public static T tryParse<T>(string tryString, T defaultValue) where T : IParsable<T>
 	{
-		return dateTime.ToString(Configuration.DATABASE_TIMEFORMAT);
+		T output = T.TryParse(tryString, CultureInfo.InvariantCulture, out output) ? output : defaultValue;
+
+		return output;
 	}
 }

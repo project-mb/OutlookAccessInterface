@@ -14,6 +14,12 @@ public class DBWorkType : DBBaseObject
 	}
 
 	//NSEC: instance members
+	public DBWorkType() : base(-1, EntryType.EXISTING)
+	{
+		this.WorkType = "";
+		this.Addition = "";
+	}
+
 	public DBWorkType(int id, EntryType entryType, string workType, string addition) : base(id, entryType)
 	{
 		this.WorkType = workType;
@@ -27,6 +33,6 @@ public class DBWorkType : DBBaseObject
 	}
 
 	//NSEC: fields
-	public string Addition { get; }
 	public string WorkType { get; }
+	public string Addition { get; }
 }

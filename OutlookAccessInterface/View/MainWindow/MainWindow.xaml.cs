@@ -8,11 +8,15 @@ namespace OutlookAccessInterface.view.mainWindow;
 /// </summary>
 public partial class MainWindow : Window
 {
+	public static MainWindow Instance { get; private set; }
+
+
 	public MainWindow()
 	{
 		InitializeComponent();
 		this.selectionView = this.ui_selectionView;
 		this.settingsView = this.ui_settingsView;
+		Instance = this;
 	}
 
 	//NSEC: fields

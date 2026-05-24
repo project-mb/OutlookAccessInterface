@@ -30,7 +30,7 @@ public class DAO_Client(IDBConnection idbConnection) : IDAO<DBClient>
 		List<DBClient> clients = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Mandant_ID, Mandant, Mandantnummer], Table_LU_Mandant);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Mandant_ID].Count; i++) {
 			DBClient newClient = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newClient.Id)) continue;

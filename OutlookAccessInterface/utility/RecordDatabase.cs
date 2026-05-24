@@ -44,11 +44,11 @@ public class RecordDatabase
 	{
 		this.databaseConnection.connect();
 
-		Days = this.daoDay.select_all();
+		WorkTypes = this.daoWorkType.select_all();
 		DayTypes = this.daoDayType.select_all();
+		Days = this.daoDay.select_all();
 		Clients = this.daoClient.select_all();
 		Projects = this.daoProject.select_all();
-		WorkTypes = this.daoWorkType.select_all();
 		CostCentreClients = this.daoCostCentreClient.select_all();
 		Records = this.daoRecord.select_all();
 

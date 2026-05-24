@@ -13,6 +13,8 @@ public class DBDayType : DBBaseObject
 	}
 
 	//NSEC: instance members
+	public DBDayType() : base(-1, EntryType.EXISTING) { this.DayType = ""; }
+
 	public DBDayType(int id, EntryType entryType, string dayType) : base(id, entryType) { this.DayType = dayType; }
 
 	public DBDayType(int idx, IReadOnlyDictionary<string, List<string>> table) : base(Convert.ToInt32(table[Tagestyp_ID][idx]), EntryType.EXISTING) { this.DayType = table[Tagestyp][idx]; }

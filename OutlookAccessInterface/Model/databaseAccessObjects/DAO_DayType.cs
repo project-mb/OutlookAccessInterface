@@ -28,7 +28,7 @@ public class DAO_DayType(IDBConnection idbConnection) : IDAO<DBDayType>
 		List<DBDayType> dbDayTypes = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Tagestyp_ID, Tagestyp], Table_LU_Tagestyp);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Tagestyp_ID].Count; i++) {
 			DBDayType newDayType = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newDayType.Id)) continue;

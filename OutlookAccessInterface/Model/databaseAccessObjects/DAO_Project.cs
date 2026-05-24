@@ -31,10 +31,11 @@ public class DAO_Project(IDBConnection idbConnection) : IDAO<DBProject>
 
 	public List<DBProject> select_all()
 	{
+		//TODO: to less project s, only select s 5 instead of all 
 		List<DBProject> projects = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Projekt_ID, Projekt, PRJ_Nummer_AG, nicht_in_Summe, Archiv], Table_LU_Projekt);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Projekt_ID].Count; i++) {
 			DBProject newProject = new(i, table);
 
 			if(RecordDatabase.Clients.Exists(x => x.Id == newProject.Id)) continue;

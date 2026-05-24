@@ -18,7 +18,15 @@ public class DBProject : DBBaseObject
 	}
 
 	//NSEC: instance members
-	public DBProject(int id, EntryType entryType, string projectName, int projectNumber, bool notInSum, bool isArchived) : base(id, entryType)
+	public DBProject() : base(-1, EntryType.EXISTING)
+	{
+		this.ProjectName = "";
+		this.ProjectNumber = "";
+		this.NotInSum = false;
+		this.IsArchived = false;
+	}
+	
+	public DBProject(int id, EntryType entryType, string projectName, string projectNumber, bool notInSum, bool isArchived) : base(id, entryType)
 	{
 		this.ProjectName = projectName;
 		this.ProjectNumber = projectNumber;
@@ -29,14 +37,14 @@ public class DBProject : DBBaseObject
 	public DBProject(int idx, IReadOnlyDictionary<string, List<string>> table) : base(Convert.ToInt32(table[Projekt_ID][idx]), EntryType.EXISTING)
 	{
 		this.ProjectName = table[Projekt][idx];
-		this.ProjectNumber = Convert.ToInt32(table[PRJ_Nummer_AG][idx]);
+		this.ProjectNumber = table[PRJ_Nummer_AG][idx];
 		this.NotInSum = Convert.ToBoolean(table[nicht_in_Summe][idx]);
 		this.IsArchived = Convert.ToBoolean(table[Archiv][idx]);
 	}
 
 	//NSEC: fields
 	public string ProjectName { get; }
-	public int ProjectNumber { get; }
+	public string ProjectNumber { get; }
 	public bool NotInSum { get; }
 	public bool IsArchived { get; }
 }

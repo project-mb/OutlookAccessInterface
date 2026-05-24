@@ -37,15 +37,15 @@ public class DBRecord : DBBaseObject
 
 	public DBRecord(int idx, IReadOnlyDictionary<string, List<string>> table) : base(Convert.ToInt32(table[Code][idx]), EntryType.EXISTING)
 	{
-		this.Day = RecordDatabase.Days.Find(x => x.Id == Convert.ToInt32(table[Datum][idx])) ?? throw new InvalidOperationException();
-		this.Project = RecordDatabase.Projects.Find(x => x.Id == Convert.ToInt32(table[Projekt][idx])) ?? throw new InvalidOperationException();
-		this.WorkType = RecordDatabase.WorkTypes.Find(x => x.Id == Convert.ToInt32(table[Taetigkeit][idx])) ?? throw new InvalidOperationException();
+		this.Day = RecordDatabase.Days.Find(x => x.Id == Utility.tryParse(table[Datum][idx], -1)) ?? new DBDay();
+		this.Project = RecordDatabase.Projects.Find(x => x.Id == Utility.tryParse(table[Projekt][idx], -1)) ?? new DBProject();
+		this.WorkType = RecordDatabase.WorkTypes.Find(x => x.Id == Utility.tryParse(table[Taetigkeit][idx], -1)) ?? new DBWorkType();
 		this.Addition = table[Ergaenzung][idx];
-		this.Time = Convert.ToDouble(table[Zeit][idx]);
-		this.Client = RecordDatabase.Clients.Find(x => x.Id == Convert.ToInt32(table[Mandant][idx])) ?? throw new InvalidOperationException();
-		this.CostCentreClient = RecordDatabase.CostCentreClients.Find(x => x.Id == Convert.ToInt32(table[KST_Mandant][idx])) ?? throw new InvalidOperationException();
+		this.Time = Utility.tryParse(table[Zeit][idx], -1);
+		this.Client = RecordDatabase.Clients.Find(x => x.Id == Utility.tryParse(table[Mandant][idx], -1)) ?? new DBClient();
+		this.CostCentreClient = RecordDatabase.CostCentreClients.Find(x => x.Id == Utility.tryParse(table[KST_Mandant][idx], -1)) ?? new DBCostCentreClient();
 		this.HasRecordReference = Convert.ToBoolean(table[Bool_alt][idx]);
-		this.RecordReference = Convert.ToInt32(table[alt_Ref][idx]);
+		this.RecordReference = Utility.tryParse(table[alt_Ref][idx], -1);
 	}
 
 	//NSEC: fields

@@ -17,7 +17,14 @@ public class DBCostCentreClient : DBBaseObject
 	}
 
 	//NSEC: instance members
-	public DBCostCentreClient(int id, EntryType entryType, DBClient client, DBProject project, int costCentreClientNumber) : base(id, entryType)
+	public DBCostCentreClient() : base(-1, EntryType.EXISTING)
+	{
+		this.Client = new DBClient();
+		this.Project = new DBProject();
+		this.CostCentreClientNumber = "";
+	}
+
+	public DBCostCentreClient(int id, EntryType entryType, DBClient client, DBProject project, string costCentreClientNumber) : base(id, entryType)
 	{
 		this.Client = client;
 		this.Project = project;
@@ -26,13 +33,13 @@ public class DBCostCentreClient : DBBaseObject
 
 	public DBCostCentreClient(int idx, IReadOnlyDictionary<string, List<string>> table) : base(Convert.ToInt32(table[KST_AG_ID][idx]), EntryType.EXISTING)
 	{
-		this.Client = RecordDatabase.Clients.Find(x => x.Id == Convert.ToInt32(table[Mandant][idx])) ?? throw new InvalidOperationException();
-		this.Project = RecordDatabase.Projects.Find(x => x.Id == Convert.ToInt32(table[Projekt][idx])) ?? throw new InvalidOperationException();
-		this.CostCentreClientNumber = Convert.ToInt32(table[KST_Nummer_AG][idx]);
+		this.Client = RecordDatabase.Clients.Find(x => x.Id == Utility.tryParse(table[Mandant][idx], -1)) ?? new DBClient();
+		this.Project = RecordDatabase.Projects.Find(x => x.Id == Utility.tryParse(table[Projekt][idx], -1)) ?? new DBProject();
+		this.CostCentreClientNumber = table[KST_Nummer_AG][idx];
 	}
 
 	//NSEC: fields
 	public DBClient Client { get; }
 	public DBProject Project { get; }
-	public int CostCentreClientNumber { get; }
+	public string CostCentreClientNumber { get; }
 }

@@ -23,7 +23,7 @@ public class ICSReader : ICalendarReader
 
 	//NSEC: fields
 	private readonly string calendarFilePath;
-	
+
 
 	//NSEC: methods
 	private CalEvent convert_IEvent_to_CalEvent(IEvent icsEvnt, CalEventType eventType = CalEventType.NORMAL)
@@ -116,7 +116,7 @@ public class ICSReader : ICalendarReader
 			for (int i = 0; i < number_of_days; i++) {
 				current_calEvent = (CalEvent) temp_calEvent.Clone();
 				//TODO filter out endTimes that are 00:00:00
-				
+
 				//N: update time and date of multiday events
 				if(number_of_days > 1) {
 					temp_calEvent.set_date(temp_calEvent.Date.AddDays(1));
@@ -147,12 +147,48 @@ public class ICSReader : ICalendarReader
 
 		calEvents = get_calendarEventsFromICSFile(fromDate, toDate);
 
-		throw new NotImplementedException();
+		return null;
 	}
 	
+	//N: IDEA FROM OLD PROJECT
+	// public void RecalculateRecordDuration()
+	// {
+	// 	foreach (Day d in Days)
+	// 	{
+	// 		//tempRecList = d.records;
+	//
+	// 		foreach (Record r in d.records)
+	// 		{
+	// 			if (lastRec == null)
+	// 			{
+	// 				tempRecList.Add(r);
+	// 			}
+	// 			else if (r.EndTime > lastRec.EndTime)
+	// 			{
+	// 				tempRecList.Append(r);
+	// 			}
+	// 			else if (r.EndTime < lastRec.EndTime)
+	// 			{
+	// 				tempRecList.Prepend(r);
+	// 			}
+	// 			else
+	// 			{
+	// 				//Debug.WriteLine("Error");
+	// 			}
+	//
+	//
+	// 			lastRec = r;
+	// 		}
+	// 	}
+	// }
+
 	//NSEC: interface ICalendarReader
 	public List<DBDay> get_days() { throw new NotImplementedException(); }
 	public List<DBProject> get_projects() { throw new NotImplementedException(); }
 	public List<DBCostCentreClient> get_costCentreClients() { throw new NotImplementedException(); }
-	public List<DBRecord> get_records(DateTime? from, DateTime? to) { throw new NotImplementedException(); }
+	public List<DBRecord> get_records(DateTime? from, DateTime? to)
+	{
+		get_calendarDaysWithRecords(from, to);
+		return null;
+	}
 }

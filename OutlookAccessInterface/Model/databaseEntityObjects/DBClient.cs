@@ -1,4 +1,5 @@
-﻿using static OutlookAccessInterface.model.databaseEntityObjects.DBClient.Table;
+﻿using OutlookAccessInterface.utility;
+using static OutlookAccessInterface.model.databaseEntityObjects.DBClient.Table;
 
 namespace OutlookAccessInterface.model.databaseEntityObjects;
 
@@ -14,6 +15,12 @@ public class DBClient : DBBaseObject
 	}
 
 	//NSEC: instance members
+	public DBClient() : base(-1, EntryType.EXISTING)
+	{
+		this.ClientName = "";
+		this.ClientNumber = -1;
+	}
+	
 	public DBClient(int id, EntryType entryType, string clientName, int clientNumber) : base(id, entryType)
 	{
 		this.ClientName = clientName;
@@ -23,7 +30,7 @@ public class DBClient : DBBaseObject
 	public DBClient(int idx, IReadOnlyDictionary<string, List<string>> table) : base(Convert.ToInt32(table[Mandant_ID][idx]), EntryType.EXISTING)
 	{
 		this.ClientName = table[Mandant][idx];
-		this.ClientNumber = Convert.ToInt32(table[Mandantnummer][idx]);
+		this.ClientNumber = Utility.tryParse(table[Mandantnummer][idx], -1);
 	}
 
 	//NSEC: fields

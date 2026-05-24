@@ -35,7 +35,7 @@ public class DAO_Day(IDBConnection idbConnection) : IDAO<DBDay>
 		List<DBDay> days = [];
 		Dictionary<string, List<string>> table = idbConnection.select([Tag_ID, Datum, Beginn, Vorgabe, Tagestyp], Table_Tage);
 
-		for (int i = 0; i < table.Count; i++) {
+		for (int i = 0; i < table[Tag_ID].Count; i++) {
 			DBDay newDay = new(i, table);
 
 			if(RecordDatabase.Days.Exists(x => x.Id == newDay.Id)) continue;
